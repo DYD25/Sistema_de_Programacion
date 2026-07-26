@@ -1,0 +1,19 @@
+.ts-control {
+    @apply !bg-green-800 !text-white !border-green-700 rounded-md !text-sm;
+}
+
+.ts-control input {
+    @apply !text-white;
+}
+
+.ts-dropdown {
+    @apply !bg-emerald-100 border !border-green-200 !rounded-md shadow-md !mt-0 ;
+}
+
+.ts-dropdown .option {
+    @apply !text-gray-700 !text-sm;
+}
+
+.ts-dropdown .active {
+    @apply !bg-green-200 !text-green-700;
+}
