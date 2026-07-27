@@ -107,3 +107,5 @@
     </div>
 
 </x-app-layout>
+
+@vite('resources/js/miembro/miembros.js')

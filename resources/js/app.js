@@ -1,20 +1,20 @@
 
+import './bootstrap';  
+
 import Alpine from 'alpinejs';
 import Services from './services';
-import Inicio from './inicio/inicio';
 
-// import 'tom-select/dist/css/tom-select.css';
-import './bootstrap';
-import 'nprogress/nprogress.css';
-import './miembro/miembros';
-
-window.Inicio = Inicio;
 window.Services = Services;
 window.Alpine = Alpine;
 
+// Inicializar la aplicación
 Services.app.iniciar();
+
 Alpine.start();
 
+// ==============================
+// Eventos globales del sistema para el menu y encabezaddo
+// ==============================
 const sidebar = document.getElementById('sidebar');
 const layout = document.getElementById('layout');
 const header = document.getElementById('header');
@@ -28,11 +28,10 @@ document.getElementById('btn-menu').addEventListener('click', () => {
     layout.classList.toggle('ml-20');
     layout.classList.toggle('ml-52');
 
-    // header.classList.toggle('ml-52');
     header.classList.toggle('-ml-18');
 
-    document.getElementById('usuario-sidebar').classList.toggle('justify-center');
-    document.querySelector('.user-info').classList.toggle('hidden');
+    document.getElementById('usuario-sidebar')?.classList.toggle('justify-center');
+    document.querySelector('.user-info')?.classList.toggle('hidden');
 });
 
 

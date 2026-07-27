@@ -167,3 +167,5 @@
     </div>
 
 </x-app-layout>
+
+@vite('resources/js/inicio/inicio.js')

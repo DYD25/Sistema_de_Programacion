@@ -1,6 +1,7 @@
 import Services from '../services';
 import { createIcons, icons } from 'lucide';
 
+
 class Miembro {
     constructor() {
         // this.formulario = formularioService;

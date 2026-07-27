@@ -1,10 +1,10 @@
 <?php
-
 use App\Http\Controllers\ProfileController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\DirectivaController;
-use App\Http\Controllers\MiembroController;
 use App\Http\Controllers\IglesiaController;
+use App\Http\Controllers\MiembroController;
+use App\Http\Controllers\DirectivaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,7 +18,9 @@ use App\Http\Controllers\IglesiaController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return Auth::check()
+        ? redirect()->route('seleccionar.iglesia')
+        : redirect()->route('login');
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -40,12 +42,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     
     Route::resource('directivas', DirectivaController::class);
 
-
-
-    // Route::get('/usuarios', [UsuarioController::class, 'index'])
-    //     ->name('usuarios');
 });
-
 
 
 Route::middleware('auth')->group(function () {

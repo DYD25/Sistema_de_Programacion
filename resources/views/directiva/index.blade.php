@@ -96,3 +96,4 @@
     </x-form.modal>
 
 </x-app-layout>
+{{-- @vite('resources/js/directiva/directivas.js') --}}
