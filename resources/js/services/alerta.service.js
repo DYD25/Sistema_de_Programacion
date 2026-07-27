@@ -1,3 +1,4 @@
+import Swal from 'sweetalert2';
 export default class AlertaService {
 
     mostrar({ icon = "info", title = "", text = "", confirmButtonText = "Aceptar", cancelButtonText = null }) {

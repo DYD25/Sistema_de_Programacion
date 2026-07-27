@@ -16,7 +16,6 @@
     </x-crud.header>
 
     <div id="panel-body">
-
         <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6 mb-5">
 
             <x-cards.card-stat title="Personal Registrados" textoSuperior="Resumen" title="Personal" valueId="card-total" value="0"

@@ -9,6 +9,7 @@ class Miembro {
     }
 
     cargarMetodos() {
+        if (!Services.iglesia.validarContexto()) return;
         Services.iglesia.inicializar();
         this.inicializarEventos();
         this.consultarDatosTable();
@@ -52,7 +53,6 @@ class Miembro {
             Services.notificacion.error(datos.mensaje);
             return false;
         }
-
         return true;
     }
 
