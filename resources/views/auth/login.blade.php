@@ -2,30 +2,34 @@
 
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
+    <div class="text-center mb-10">
+
+        <div
+            class="mx-auto w-14 h-14 rounded-2xl bg-gradient-to-br from-[#21783E] to-[#1FA6A6] flex items-center justify-center shadow-lg">
+
+            <x-heroicon-o-building-library class="w-7 h-7 text-white" />
+
+        </div>
+
+        <h1 class="mt-6 text-2xl font-bold text-slate-800">
+            Sistema de Programación
+        </h1>
+
+        <p class="mt-2 text-slate-500">
+            Bienvenido nuevamente
+        </p>
+
+        <p class="mt-1 text-sm text-slate-400">
+            Accede con tu cuenta para continuar.
+        </p>
+
+    </div>
+
     <form method="POST" action="{{ route('login') }}" class="space-y-6">
 
         @csrf
 
         {{-- Correo --}}
-        {{-- <div>
-
-            <x-input-label for="email" value="Correo electrónico" class="mb-2 font-semibold" />
-
-            <div class="relative">
-
-                <div class="absolute inset-y-0 left-0 flex items-center pl-4">
-                    <x-heroicon-o-envelope class="w-5 h-5 text-gray-400" />
-                </div>
-
-                <input id="email" name="email" type="email" value="{{ old('email') }}" required autofocus
-                    autocomplete="username" placeholder="correo@ejemplo.com"
-                    class=" w-full    rounded-xl   border-gray-300    pl-12   pr-4   py-3      shadow-sm    focus:border-[#21783E]     focus:ring-[#21783E]  ">
-
-            </div>
-
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
-
-        </div> --}}
 
         <x-ui.input label="Correo electrónico" name="email" type="email" placeholder="ejemplo@correo.com"
             :value="old('email')" required autofocus autocomplete="username">
@@ -37,7 +41,7 @@
             </x-slot:icon>
 
         </x-ui.input>
-{{-- Contraseña --}}
+        {{-- Contraseña --}}
         <x-ui.input label="Contraseña" name="password" type="password" placeholder="••••••••" required
             autocomplete="current-password">
 
@@ -46,27 +50,23 @@
             </x-slot:icon>
 
         </x-ui.input>
-        
+
 
         {{-- Recordarme --}}
-        <div class="flex items-center justify-between">
 
-            <label class="flex items-center gap-2">
+        <div class="flex items-center justify-between mt-6">
 
-                <input type="checkbox" name="remember"
-                    class="rounded border-gray-300 text-[#21783E] focus:ring-[#21783E]">
+            <x-ui.checkbox name="remember" label="Recordarme" :checked="old('remember')" />
+            
+            {{-- @if (Route::has('password.request')) --}}
+            
+            <a href="#"
+            class="text-sm font-medium text-[#1FA6A6] hover:text-[#21783E] transition-colors">
+            
+            ¿Olvidaste tu contraseña?
 
-                <span class="text-sm text-gray-600">
-                    Recordarme
-                </span>
-
-            </label>
-
-            @if (Route::has('password.request'))
-                <a href="{{ route('password.request') }}" class="text-sm text-[#21783E] hover:underline">
-                    ¿Olvidaste tu contraseña?
                 </a>
-            @endif
+            {{-- @endif --}}
 
         </div>
 

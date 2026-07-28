@@ -153,39 +153,9 @@
             {{-- Tarjeta Login --}}
             <div
                 class="relative z-10 w-full max-w-md mx-8 rounded-3xl bg-white/85 backdrop-blur-xl border border-white/60 shadow-[0_30px_70px_rgba(15,23,42,.12)] p-10 animate-fade-up">
-                <div class="text-center">
-
-                    <div
-                        class="mx-auto  w-14 h-14    rounded-2xl   bg-gradient-to-br   from-[#21783E]   via-[#1FA6A6]  to-[#1F4E79]  flex items-center justify-center  shadow-lg">
-                        <x-heroicon-o-building-library class="w-7 h-7 text-white" />
-                    </div>
-
-                    <h1 class="mt-6 text-2xl font-bold text-slate-800">
-
-                        Sistema de Programación
-
-                    </h1>
-
-                    <p class="mt-2 text-slate-600 font-medium">
-
-                        Bienvenido nuevamente
-
-                    </p>
-
-                    <p class="mt-1 text-sm text-slate-500">
-
-                        Accede con tu cuenta para continuar.
-
-                    </p>
-
-                </div>
-
-                <div class="mt-10">
-
-                    {{ $slot }}
-
-                </div>
-
+             
+                {{ $slot }}
+                
                 <div class="mt-10 border-t border-slate-200 pt-5 text-center">
 
                     <p class="text-xs text-slate-400">
