@@ -105,7 +105,8 @@ class MiembroService
         {
             return [
                 'excepcion' => true,
-                'mensaje' => "La persona '{$nombre}' ya se encuentra registrada."
+                'mensaje' => "La persona '{$nombre}' ya se encuentra registrada.",
+                'status' => 400,
             ]; 
         }
     }

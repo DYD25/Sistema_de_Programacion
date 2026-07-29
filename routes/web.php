@@ -26,7 +26,7 @@ Route::get('/', function () {
 Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/dashboard', function () {
-        return view('inicio.inicio');
+        return view('dashboard.index');
     })->name('dashboard');
 
      Route::post('/iglesia/seleccionar', [IglesiaController::class, 'seleccionar'])

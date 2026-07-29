@@ -21,17 +21,17 @@
 
         @csrf
 
-        <x-ui.input label="Correo electrónico" name="email" type="email" placeholder="ejemplo@correo.com"
+        <x-form.input label="Correo electrónico" name="email" type="email" placeholder="ejemplo@correo.com"
             :value="old('email')" required autofocus autocomplete="username">
             <x-slot:icon>
                 <x-heroicon-o-envelope class="w-5 h-5" />
             </x-slot:icon>
-        </x-ui.input>
+        </x-form.input>
 
 
-        <x-ui.button-primary>
+        <x-form.button-primary>
             Enviar enlace
-        </x-ui.button-primary>
+        </x-form.button-primary>    
 
     </form>
 

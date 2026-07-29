@@ -18,8 +18,8 @@
     <div id="panel-body">
         <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6 mb-5">
 
-            <x-cards.card-stat title="Personal Registrados" textoSuperior="Resumen" title="Personal" valueId="card-total" value="0"
-                texto="Registrados">
+            <x-cards.card-stat title="Personal Registrados" textoSuperior="Resumen"  valueId="card-total" value="0"
+                subtitle="Registrados" topText="Agosto 2026">
                 <div id="grafica-total-miembros" class="h-12"></div>
                 <x-slot:footer>
                     <span id="crecimiento-miembros" class="text-green-600 text-xs font-semibold">
@@ -28,7 +28,7 @@
                 </x-slot:footer>
             </x-cards.card-stat>
 
-            <x-cards.card-stat textoSuperior="Estado" title="Personal Activos" valueId="card-activos" value="0" subtitleId="porcentaje-activos" texto="">
+            <x-cards.card-stat textoSuperior="Estado" title="Personal Activos" valueId="card-activos" value="0" subtitleId="porcentaje-activos" subtitle="">
                 <div id="grafica-activos-miembro" class="h-12"></div>
                 <x-slot:footer>
                     <span class="text-green-600 text-xs font-semibold">
@@ -37,7 +37,7 @@
                 </x-slot:footer>
             </x-cards.card-stat>
 
-            <x-cards.card-stat textoSuperior="Estado" title="Personal Inactivos" valueId="card-inactivos" value="0" subtitleId="porcentaje-inactivos" texto="">
+            <x-cards.card-stat textoSuperior="Estado" title="Personal Inactivos" valueId="card-inactivos" value="0" subtitleId="porcentaje-inactivos" subtitle="">
                 <div id="grafica-inactivos-miembro" class="h-12"></div>
                 <x-slot:footer>
                     <span class="text-red-500 text-xs font-semibold">
@@ -46,7 +46,7 @@
                 </x-slot:footer>
             </x-cards.card-stat>
 
-            <x-cards.card-stat textoSuperior="Resumen" title="Estado General" valueId="card-general" value="0" texto="Miembros activos">
+            <x-cards.card-stat textoSuperior="Resumen" title="Estado General" valueId="card-general" value="0" subtitle="Miembros activos">
                 <div id="grafica-radial-miembro" class="h-14"></div>
                 <x-slot:footer>
                     <span id="estado-general" class="text-green-600 text-xs font-semibold">

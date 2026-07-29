@@ -31,7 +31,7 @@
 
         {{-- Correo --}}
 
-        <x-ui.input label="Correo electrónico" name="email" type="email" placeholder="ejemplo@correo.com"
+        <x-form.input label="Correo electrónico" name="email" type="email" placeholder="ejemplo@correo.com"
             :value="old('email')" required autofocus autocomplete="username">
 
             <x-slot:icon>
@@ -40,23 +40,23 @@
 
             </x-slot:icon>
 
-        </x-ui.input>
+        </x-form.input>
         {{-- Contraseña --}}
-        <x-ui.input label="Contraseña" name="password" type="password" placeholder="••••••••" required
+        <x-form.input label="Contraseña" name="password" type="password" placeholder="••••••••" required
             autocomplete="current-password">
 
             <x-slot:icon>
                 <x-heroicon-o-lock-closed class="w-5 h-5" />
             </x-slot:icon>
 
-        </x-ui.input>
+        </x-form.input>
 
 
         {{-- Recordarme --}}
 
         <div class="flex items-center justify-between mt-6">
 
-            <x-ui.checkbox name="remember" label="Recordarme" :checked="old('remember')" />
+            <x-form.checkbox name="remember" label="Recordarme" :checked="old('remember')" />
             
             {{-- @if (Route::has('password.request')) --}}
             
@@ -71,9 +71,9 @@
         </div>
 
         {{-- Botón --}}
-        <x-ui.button-primary>
+        <x-form.button-primary>
             Entrar al sistema
-        </x-ui.button-primary>
+        </x-form.button-primary>
 
     </form>
 

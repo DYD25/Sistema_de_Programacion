@@ -153,9 +153,9 @@
             {{-- Tarjeta Login --}}
             <div
                 class="relative z-10 w-full max-w-md mx-8 rounded-3xl bg-white/85 backdrop-blur-xl border border-white/60 shadow-[0_30px_70px_rgba(15,23,42,.12)] p-10 animate-fade-up">
-             
+
                 {{ $slot }}
-                
+
                 <div class="mt-10 border-t border-slate-200 pt-5 text-center">
 
                     <p class="text-xs text-slate-400">
