@@ -1,70 +1,52 @@
-<x-form.section
-    title="Programación de la semana"
-    subtitle="Actividades programadas para los próximos días.">
+<x-form.section title="" subtitle="">
 
     <x-cards.card>
 
-        <div class="divide-y divide-slate-100">
+        <x-slot:header>
 
-            <div class="flex items-center justify-between py-4">
+            <div class=" flex items-center justify-between">
 
-                <div>
+                <div class="flex items-center gap-3">
 
-                    <p class="font-semibold text-slate-700">
-                        Culto de Oración
-                    </p>
+                    <div class="flex h-5 w-5 items-center justify-center rounded-xl bg-green-50">
+                        <x-heroicon-o-calendar-days class="w-6 h-6 text-[#21783E]" />
+                    </div>
 
-                    <p class="text-sm text-slate-500">
-                        Martes - 7:00 PM
-                    </p>
-
-                </div>
-
-                <span class="text-sm font-semibold text-green-600">
-                    Completo
-                </span>
-
-            </div>
-
-            <div class="flex items-center justify-between py-4">
-
-                <div>
-
-                    <p class="font-semibold text-slate-700">
-                        Ensayo de Alabanza
-                    </p>
-
-                    <p class="text-sm text-slate-500">
-                        Jueves - 7:30 PM
-                    </p>
+                    <div>
+                        <h3 class="font-semibold text-slate-800">
+                            Programación de la semana
+                        </h3>
+                    </div>
 
                 </div>
 
-                <span class="text-sm font-semibold text-amber-500">
-                    2 vacantes
-                </span>
+    
+                 <a href="#"
+                    class=" text-sm inline-flex items-center gap-2 font-medium text-[#21783E] hover:text-[#1FA6A6]">
+
+                   Ver calendario
+
+                    <x-heroicon-o-arrow-right class="w-4 h-4" />
+
+                </a>
 
             </div>
 
-            <div class="flex items-center justify-between py-4">
+        </x-slot:header>
 
-                <div>
+        <div class="divide1-y">
 
-                    <p class="font-semibold text-slate-700">
-                        Culto General
-                    </p>
+            <x-lists.schedule-item day="MAR" date="29" title="Culto de Oración" time="7:00 PM - 8:30 PM"
+                status="Completo" color="green" />
 
-                    <p class="text-sm text-slate-500">
-                        Sábado - 6:00 PM
-                    </p>
+            <x-lists.schedule-item day="JUE" date="31" title="Ensayo de Alabanza" time="7:30 PM - 9:00 PM"
+                status="2 vacantes" color="yellow" />
 
-                </div>
+            <x-lists.schedule-item day="SAB" date="02" title="Culto General" time="6:00 PM - 8:00 PM"
+                status="En proceso" color="blue" />
 
-                <span class="text-sm font-semibold text-cyan-600">
-                    En proceso
-                </span>
-
-            </div>
+            <x-lists.schedule-item day="DOM" date="03" title="Escuela Dominical" time="9:00 AM - 10:30 AM"
+                status="Pendiente" color="purple" last />
 
         </div>
 

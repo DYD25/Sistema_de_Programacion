@@ -1,51 +1,56 @@
-@props([
-    'title',
-    'subtitle',
-    'value',
-    'valueId' => null,
-    'titleId' => null,
-    'subtitleId' => null,
-    'topText' => null,
-])
+@props(['title', 'subtitle', 'value', 'trend' => null, 'icon' => null])
 
-<div class="bg-white rounded-xl shadow-sm p-4 h-full">
+<div
+    class="group bg-white rounded-2xl border border-slate-200 p-5 shadow-sm hover:shadow-lg transition-all duration-300">
 
-    <div class="flex flex-col h-full">
+    <div class="flex items-center justify-between">
 
-        {{-- Texto superior --}}
-        <p class="text-[11px] text-gray-400">
-            {{ $topText }}
-        </p>
+        <div class="flex items-center gap-4">
 
-        {{-- Título --}}
-        <h3 id="{{ $titleId }}" class="text-sm font-semibold mt-0">
-            {{ $title }}
-        </h3>
+            {{-- Icono --}}
+            <div
+                class="flex h-20 w-20 items-center justify-center rounded-2xl bg-gradient-to-br from-[#21783E] to-[#1FA6A6] shadow-md">
 
-        <div class="flex items-center justify-between mt-1">
+                @if ($icon)
+                    {{ $icon }}
+                @else
+                    <x-heroicon-o-chart-bar class="w-10 h-10 text-white" />
+                @endif
 
-            {{-- Valor --}}
-            <p id="{{ $valueId }}" class="text-3xl font-bold">
-                {{ $value }}
-            </p>
+            </div>
 
-            {{-- Mini gráfica / Icono --}}
-            <div class="!w-24 h-10 flex items-center justify-end">
-                {{ $slot }}
+            <div class="flex h-20 flex-col justify-between">
+
+                <div>
+                    <h4 class="text-sm font-semibold text-slate-800">
+                        {{ $title }}
+                    </h4>
+
+                    <p class="text-xs text-slate-500">
+                        {{ $subtitle }}
+                    </p>
+                </div>
+
+                <p class="text-4xl font-bold tracking-tight text-slate-900">
+                    {{ $value }}
+                </p>
+
             </div>
 
         </div>
 
-        {{-- Pie --}}
-        <div class="flex items-center justify-between mt-3">
+        <div class="flex flex-col items-end justify-between h-20">
 
-            <span id="{{ $subtitleId }}" class="text-xs text-gray-500">
-                {{ $subtitle }}
-            </span>
+            <div class="opacity-80">
+                {{ $chart ?? '' }}
+            </div>
 
-            @isset($footer)
-                {{ $footer }}
-            @endisset
+            @if ($trend)
+                <span
+                    class="inline-flex items-center rounded-full bg-green-50 px-2 py-1 text-xs font-semibold text-green-700">
+                    ↑ {{ $trend }}
+                </span>
+            @endif
 
         </div>
 
