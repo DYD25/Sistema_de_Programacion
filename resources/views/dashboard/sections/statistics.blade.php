@@ -12,7 +12,7 @@
 
         </x-cards.card-stat>
 
-        <x-cards.card-stat title="Miembros" subtitle="Registradosxxxx" value="125" trend="+5%">
+        <x-cards.card-stat title="Miembros" subtitle="Registrados" value="125" trend="+5%">
 
             <x-slot:chart>
 
