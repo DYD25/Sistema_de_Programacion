@@ -1,4 +1,6 @@
 import NProgress from 'nprogress';
+import 'nprogress/nprogress.css';
+
 export default class PeticionService {
 
     async request(ruta, { method = 'POST', data = {}, loader = false } = {}) {
@@ -29,7 +31,7 @@ export default class PeticionService {
         }
 
         try {
-            const response = await fetch(ruta, {
+            let response = await fetch(ruta, {
                 method,
                 body: formData
             });
@@ -37,7 +39,6 @@ export default class PeticionService {
             return await response.json();
 
         } catch (error) {
-            console.error(error);
             return null;
         } finally {
             if (loader === 'progress') {

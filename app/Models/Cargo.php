@@ -2,16 +2,12 @@
 
 namespace App\Models;
 
-use app\Models\Iglesia;
-
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Directiva extends Model
+class Cargo extends Model
 {
     use HasFactory;
-    public function iglesia()
-    {
-        return $this->belongsTo(Iglesia::class);
-    }
+    protected $guarded = ['id'];
+
 }

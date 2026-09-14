@@ -15,9 +15,10 @@ export default class TooltipService {
             },
             placement: 'top',
             animation: 'shift-away',
+            delay: [50, 0],
+            duration: [150, 100],
             theme: 'light-border',
         });
-
     }
 
 

@@ -55,12 +55,7 @@ window.addEventListener('drawer-loaded', (e) => {
     if (e.detail.id === '{{ $modal }}') {
         this.loading = false;
     }
-
 });
-
-
-
-
 
     }
 }" x-show="open" @keydown.escape.window="if(open) cerrar()" id="{{ $modal }}"

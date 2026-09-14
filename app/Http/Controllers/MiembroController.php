@@ -29,18 +29,10 @@ class MiembroController extends Controller
             );
         } catch (Throwable $e) {
 
-            return response()->json([
-                'success' => false,
-                'message' => 'No fue posible obtener la información.',
-                // 'error' => config('app.debug') ? $e->getMessage() : null
-            ], 500);
+            return response()->json([  'error' => true,'mensaje' => 'No fue posible obtener la información.' ], 500);
         }
     }
 
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(MiembroRequest $request)
     {
         try {
@@ -69,7 +61,6 @@ class MiembroController extends Controller
     {
         try {
             $data = $request->all();
-
             $response = $this->miembroService->procesarParaEstado($data);
 
             return response()->json($response);
@@ -81,15 +72,15 @@ class MiembroController extends Controller
     public function  eliminar(Request $request)
     {
         try {
-            $id = $request->all()['id'];
-            $response = $this->miembroService->procesarParaEliminar($id);
+            $data = $request->all();
+            $response = $this->miembroService->procesarParaEliminar($data);
             return response()->json($response);
         } catch (Throwable $t) {
             return response()->json(['error' => true, 'mensaje' => 'No se pudo eliminar la persona.'], 500);
         }
     }
 }
-  //     dd(['error' => $t->getMessage(),
-            //     'Linea'=>$t->getLine(),
-            //     'Archivo'=>$t->getFile(),
-            // ]);
+//  dd(['error' => $t->getMessage(),
+//                 'Linea'=>$t->getLine(),
+//                 'Archivo'=>$t->getFile(),
+//             ]);

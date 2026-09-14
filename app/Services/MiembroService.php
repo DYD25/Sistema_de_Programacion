@@ -51,57 +51,57 @@ class MiembroService
         ];
     }
 
-    public function procesarParaGuardar(array $datos)
+    public function procesarParaGuardar(array $data)
     {
         $id_iglesia = $this->contextoService->obtenerIglesiaId();
-        $respusta =  $this->obtenerMiembroExistente($datos['nombre'], $datos['nombre_whatsapp'], $datos['telefono'], $id_iglesia);
+        $respusta =  $this->obtenerMiembroExistente($data['nombre'], $data['telefono'], $id_iglesia);
 
         if($respusta) return $respusta;
 
-        $this->miembroRepository->guardarMiembros($datos, $id_iglesia);
+        $this->miembroRepository->guardarMiembros($data, $id_iglesia);
 
         return [
             'mensaje' => 'Persona registrado correctamente.'
         ];
     }
 
-    public function procesarParaActualizar(array $datos)
+    public function procesarParaActualizar(array $data)
     {
         $id_iglesia = $this->contextoService->obtenerIglesiaId();
-        $respusta =  $this->obtenerMiembroExistente($datos['nombre'], $datos['nombre_whatsapp'], $datos['telefono'], $id_iglesia, $datos['id']);
+        $respusta =  $this->obtenerMiembroExistente($data['nombre'], $data['telefono'], $id_iglesia, $data['id']);
 
         if($respusta) return $respusta;
         
-        $this->miembroRepository->actualizarMiembros($datos, $id_iglesia);
+        $this->miembroRepository->actualizarMiembros($data, $id_iglesia);
 
         return [
             'mensaje' => 'Persona actualizado correctamente.'
         ];
     }
 
-    public function procesarParaEstado(array $datos)
+    public function procesarParaEstado(array $data)
     {
         $id_iglesia = $this->contextoService->obtenerIglesiaId();   
-        $this->miembroRepository->actualizarEstadoMiembros($datos, $id_iglesia);
+        $this->miembroRepository->actualizarEstadoMiembros($data, $id_iglesia);
 
         return [
             'mensaje' => 'Estado actualizado correctamente.'    
         ];
     }
 
-    public function procesarParaEliminar(array $id)
+    public function procesarParaEliminar(array $data)
     {
         $id_iglesia = $this->contextoService->obtenerIglesiaId();
-        $this->miembroRepository->eliminarMiembros($id, $id_iglesia);
+        $this->miembroRepository->eliminarMiembros($data['id'], $id_iglesia);
 
         return [
             'mensaje' => 'Persona eliminado correctamente.' 
         ];
     }
 
-    public function obtenerMiembroExistente(string $nombre, string $nombre_whatsapp, string $telefono,int $id_iglesia,int $id=null)
+    public function obtenerMiembroExistente(string $nombre, string $telefono,int $id_iglesia,int $id=null)
     {
-        if($this->miembroRepository->existeMiembro($nombre, $nombre_whatsapp, $telefono,$id_iglesia,$id))      
+        if($this->miembroRepository->existeMiembro($nombre, $telefono,$id_iglesia,$id))      
         {
             return [
                 'excepcion' => true,

@@ -28,6 +28,13 @@
             Inicio
         </x-menu.item>
 
+        <x-menu.item :href="route('directivas.index')" :active="request()->routeIs('directivas.index')">
+            <x-slot:icon>
+                <x-heroicon-s-user-group class="w-5 h-5" />
+            </x-slot:icon>
+            Directiva
+        </x-menu.item>
+
         <x-menu.item :href="route('miembros.index')" :active="request()->routeIs('miembros.index')">
             <x-slot:icon>
                 <x-heroicon-s-users class="w-5 h-5" />
@@ -37,9 +44,9 @@
 
         <x-menu.item :href="route('directivas.index')" :active="request()->routeIs('directivas.index')">
             <x-slot:icon>
-                <x-heroicon-s-user-group class="w-5 h-5" />
+                <x-heroicon-s-calendar-days class="w-5 h-5" />
             </x-slot:icon>
-            Directivas
+            Encuesta
         </x-menu.item>
 
         <x-menu.item :href="route('directivas.index')" :active="request()->routeIs('directivas.index')">

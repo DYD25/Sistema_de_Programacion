@@ -1,11 +1,8 @@
 import Services from '../services';
 import { createIcons, icons } from 'lucide';
 
-
 class Miembro {
     constructor() {
-        // this.formulario = formularioService;
-        this.id_facturador = 2;
         this.enviarDatos = [];
     }
 
@@ -14,7 +11,6 @@ class Miembro {
         Services.iglesia.inicializar();
         this.inicializarEventos();
         this.consultarDatosTable();
-        // this.btnEditar();
     }
 
     async consultaGeneral(error, ruta, { loader = false } = {}) {
@@ -24,7 +20,7 @@ class Miembro {
             loader
         });
 
-        if (!this.procesarRespuestaError(respuesta, mensajeError)) {
+        if (!Services.respuesta.procesarError(respuesta, mensajeError)) {
             return null;
         }
 
@@ -32,30 +28,30 @@ class Miembro {
         return respuesta;
     }
 
-    procesarRespuestaError(datos, mensaje_error) {
+    // procesarRespuestaError(datos, mensaje_error) {
 
-        if (!datos) {
-            Services.alerta.error(mensaje_error);
-            return false;
-        }
+    //     if (!datos) {
+    //         Services.alerta.error(mensaje_error);
+    //         return false;
+    //     }
 
-        if (datos.validacion) {
-            Services.formulario.mostrarErroresCampos(datos.errores);
-            Services.notificacion.warning(datos.mensaje);
-            return false;
-        }
+    //     if (datos.validacion) {
+    //         Services.formulario.mostrarErroresCampos(datos.errores);
+    //         Services.notificacion.info(datos.mensaje);
+    //         return false;
+    //     }
 
-        if (datos.excepcion) {
-            Services.notificacion.warning(datos.mensaje);
-            return false;
-        }
+    //     if (datos.excepcion) {
+    //         Services.notificacion.warning(datos.mensaje);
+    //         return false;
+    //     }
 
-        if (datos.error) {
-            Services.notificacion.error(datos.mensaje);
-            return false;
-        }
-        return true;
-    }
+    //     if (datos.error) {
+    //         Services.notificacion.error(datos.mensaje);
+    //         return false;
+    //     }
+    //     return true;
+    // }
 
     inicializarEventos() {
         Services.formulario.onSubmit('form-crear-persona', () => this.guardarPersona());
@@ -64,7 +60,7 @@ class Miembro {
     }
 
     async consultarDatosTable() {
-        let respuesta = await this.consultaGeneral('cunsulta los datos', 'consultar-datos-tabla', { loader: 'progress' });
+        let respuesta = await this.consultaGeneral('cunsulta los datos', 'consultar-datos-tabla-miembro', { loader: 'progress' });
         if (!respuesta) return;
         this.cargarTabla(respuesta.data);
         this.actualizarGraficas(respuesta.estadisticas);
@@ -74,7 +70,7 @@ class Miembro {
 
     actualizarGraficas(datos) {
 
-        const { historico, porcentaje_activos } = datos;
+        const { historico, porcentaje_activos, porcentaje_inactivos } = datos;
 
         Services.chart.crearSparkline(
             'grafica-total-miembros',
@@ -92,9 +88,17 @@ class Miembro {
             '#ef4444'
         );
 
-        Services.chart.crearMiniRadial(
-            'grafica-radial-miembro',
-            porcentaje_activos
+        Services.chart.crearMiniBarComparativo(
+            'grafica-general-miembro',
+            [
+                porcentaje_activos,
+                porcentaje_inactivos
+            ],
+            [
+                'Activos',
+                'Inactivos'
+            ],
+            55
         );
 
     }
@@ -192,7 +196,7 @@ class Miembro {
                 estado: datos.estado
             };
 
-            let respuesta = await this.consultaGeneral('actualizar el estado la persona', 'estado', { loader: 'progress' });
+            let respuesta = await this.consultaGeneral('actualizar el estado la persona', 'estado-miembro', { loader: 'progress' });
             if (!respuesta) return;
             Services.notificacion.success(respuesta.mensaje);
             this.consultarDatosTable();
@@ -202,7 +206,7 @@ class Miembro {
     btnEliminar() {
         Services.tabla.evento('#table_persona', '.btn-eliminar', (datos) => {
 
-            Swal.fire({
+            Services.swal.fire({
                 title: `Eliminar Registro`,
                 html: `¿Está seguro de eliminar el registro de <b>${datos.nombre}?</b> </br> Esta acción no se puede deshacer.`,
                 icon: 'question',
@@ -223,7 +227,7 @@ class Miembro {
     async eliminar(id) {
         this.enviarDatos = { id: id, };
 
-        let respuesta = await this.consultaGeneral('eliminar el registro la persona', 'eliminar', { loader: 'progress' });
+        let respuesta = await this.consultaGeneral('eliminar el registro la persona', 'eliminar-miembro', { loader: 'progress' });
         if (!respuesta) return;
         Services.notificacion.success(respuesta.mensaje);
         this.consultarDatosTable();
@@ -256,20 +260,22 @@ class Miembro {
     }
 
     async guardarPersona() {
+        Services.formulario.limpiarErroresCampos('form-crear-persona');
         this.enviarDatos = Services.formulario.obtenerDatos('form-crear-persona');
+        
+        let ruta = 'crear';
         if (this.personaId) {
             this.enviarDatos.id = this.personaId;
+            ruta = 'actualizar'
         }
 
-        let ruta = this.personaId ? 'actualizar' : 'crear';
-        let respuesta = await this.consultaGeneral(ruta + ' la persona', ruta, { loader: { type: 'drawer', id: 'crear-persona' } });
+        let respuesta = await this.consultaGeneral(ruta + ' la persona', ruta+'-miembro', { loader: { type: 'drawer', id: 'crear-persona' } });
         if (!respuesta) return;
 
         Services.drawer.cerrar('crear-persona');
         Services.notificacion.success(respuesta.mensaje);
         this.consultarDatosTable();
     }
-
 
 }
 

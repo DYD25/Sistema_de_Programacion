@@ -15,8 +15,8 @@ class Iglesia extends Model
         return $this->hasMany(Miembro::class);
     }
 
-    public function directivas()
-    {
-        return $this->hasMany(Directiva::class);
-    }
+    // public function directivas()
+    // {
+    //     return $this->hasMany(Directiva::class);
+    // }
 }

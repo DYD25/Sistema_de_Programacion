@@ -1,6 +1,6 @@
 @props(['iglesias', 'iglesiaSeleccionada'])
 
-<div class="p-2 border-b border-green-800">
+<div class="select-iglesia p-2 border-b border-green-800">
 
     <select id="selectIglesia" class="select w-full rounded-md bg-green-800 border-green-700 text-white text-sm">
 

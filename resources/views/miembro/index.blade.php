@@ -18,42 +18,48 @@
     <div id="panel-body">
         <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6 mb-5">
 
-            <x-cards.card-stat title="Personal Registrados" textoSuperior="Resumen"  valueId="card-total" value="0"
+            <x-cards.card-stat-chart title="Personal Registrados" textoSuperior="Resumen" valueId="card-total" value="0"
                 subtitle="Registrados" topText="Agosto 2026">
                 <div id="grafica-total-miembros" class="h-12"></div>
                 <x-slot:footer>
                     <span id="crecimiento-miembros" class="text-green-600 text-xs font-semibold">
-                            ▲ +0 este mes
+                        ▲ +0 este mes
                     </span>
                 </x-slot:footer>
-            </x-cards.card-stat>
+            </x-cards.card-stat-chart>
 
-            <x-cards.card-stat textoSuperior="Estado" title="Personal Activos" valueId="card-activos" value="0" subtitleId="porcentaje-activos" subtitle="">
+            <x-cards.card-stat-chart textoSuperior="Estado" title="Personal Activos" valueId="card-activos" value="0" subtitleId="porcentaje-activos" subtitle="">
                 <div id="grafica-activos-miembro" class="h-12"></div>
                 <x-slot:footer>
                     <span class="text-green-600 text-xs font-semibold">
                         ▲ %
                     </span>
                 </x-slot:footer>
-            </x-cards.card-stat>
+            </x-cards.card-stat-chart>
 
-            <x-cards.card-stat textoSuperior="Estado" title="Personal Inactivos" valueId="card-inactivos" value="0" subtitleId="porcentaje-inactivos" subtitle="">
+            <x-cards.card-stat-chart textoSuperior="Estado" title="Personal Inactivos" valueId="card-inactivos" value="0" subtitleId="porcentaje-inactivos" subtitle="">
                 <div id="grafica-inactivos-miembro" class="h-12"></div>
                 <x-slot:footer>
                     <span class="text-red-500 text-xs font-semibold">
                         ▼ %
                     </span>
                 </x-slot:footer>
-            </x-cards.card-stat>
+            </x-cards.card-stat-chart>
 
-            <x-cards.card-stat textoSuperior="Resumen" title="Estado General" valueId="card-general" value="0" subtitle="Miembros activos">
-                <div id="grafica-radial-miembro" class="h-14"></div>
+            <x-cards.card-stat-chart textoSuperior="Resumen" title="Estado General" valueId="card-general" value="0" subtitle="Miembros activos">
+
+                <div id="grafica-general-miembro" class="h-12 w-full"></div>
+
                 <x-slot:footer>
+
                     <span id="estado-general" class="text-green-600 text-xs font-semibold">
                         Excelente
                     </span>
-                </x-slot:footer>    
-            </x-cards.card-stat>
+
+                </x-slot:footer>
+
+                </x-cards.card-stat-chart>
+
         </div>
 
         <x-crud.panel modal="crear-persona">
@@ -63,13 +69,13 @@
             </x-slot:icon>
 
             @php
-                $columnas = [
-                    ['contenido' => 'Nombre'],
-                    ['contenido' => 'Nombre Whatsapp'],
-                    ['contenido' => 'Telefono'],
-                    ['contenido' => 'Estado'],
-                    ['contenido' => 'Acciones'],
-                ];
+            $columnas = [
+            ['contenido' => 'Nombre'],
+            ['contenido' => 'Nombre Whatsapp'],
+            ['contenido' => 'Telefono'],
+            ['contenido' => 'Estado'],
+            ['contenido' => 'Acciones'],
+            ];
             @endphp
 
             <div class="overflow-x-auto">
@@ -90,14 +96,23 @@
             <div class="space-y-4">
 
                 <x-form.input label="Nombre " name="nombre" placeholder="Ej. Plablo Perez" :obligatorio="true"
-                    maxlength="20" />
+                    maxlength="20">
+                    <x-slot:icon>
+                        <x-heroicon-s-user class="w-5" />
+                    </x-slot:icon>
+                </x-form.input>
+
                 <x-form.input label="Nombre Whatsapp" name="nombre_whatsapp" placeholder="Ej. H.Plablo" :obligatorio="true"
-                    maxlength="50" />
+                    maxlength="50">
+                    <x-slot:icon>
+                        <x-heroicon-s-user class="w-5" />
+                    </x-slot:icon>
+                </x-form.input>
 
                 <div class="md:col-span-2">
                     <x-form.input label="Teléfono" name="telefono" placeholder="Ej. 3112001225" :obligatorio="true">
                         <x-slot:icon>
-                            <x-heroicon-o-phone class="w-5" />
+                            <x-heroicon-s-phone class="w-5" />
                         </x-slot:icon>
                     </x-form.input>
                 </div>

@@ -12,6 +12,11 @@ import CardService from './card.service';
 import ChartService from './chart.service';
 import NotificacionService  from './notificacion.service';    
 import TooltipService from './tooltip.service';
+import RespuestaService from './respuesta.service';
+import Swal from 'sweetalert2';
+
+
+
 
 const Services = {
     app: new AppService(),
@@ -29,6 +34,8 @@ const Services = {
     card: new CardService(),
     chart: new ChartService(),
     tooltip: new TooltipService(),
+    respuesta: new RespuestaService(),
+    swal: Swal,
 
 };
 

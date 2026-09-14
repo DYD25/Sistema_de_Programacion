@@ -11,13 +11,13 @@ export default class AccionService {
     botones(datos, opciones = {}) {
 
         let html = `<div class="flex justify-center gap-2">`;
+        
+        if (opciones.estado ?? true) {
+            html += this.botonEstado(datos.id, datos.estado);
+        }
 
         if (opciones.editar ?? true) {
             html += this.botonEditar(datos.id);
-        }
-
-        if (opciones.estado ?? true) {
-            html += this.botonEstado(datos.id, datos.estado);
         }
 
         if (opciones.eliminar ?? true) {
@@ -48,11 +48,11 @@ export default class AccionService {
     botonEstado(id, estado) {
         return `
             <button
-                class="btn-estado ${this.estilos.estado}"
+                class="btn-estado ${this.estilos.estado} ${estado ? 'estado_inactivo' : 'estado_activo'}"
                 data-id="${id}"
                 data-estado="${estado}"
                 data-tooltip="${estado ? 'Desactivar' : 'Activar'}">
-                <i data-lucide="${estado ? 'circle-check-big' : 'info'}"></i>
+                <i data-lucide="${estado ? 'info' : 'circle-check-big'}"></i>
             </button>
         `;
     }

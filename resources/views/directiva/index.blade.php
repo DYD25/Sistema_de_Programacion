@@ -1,99 +1,104 @@
 <x-app-layout>
 
-    <div class="flex items-center justify-between mb-6">
-
-        <div class="flex items-start gap-3">
-
-            <div class="p-2 bg-green-100 rounded-lg">
-                <x-heroicon-s-user-group class="w-8 h-8 text-green-600" />
-            </div>
-
-            <div>
-                <h1 class="text-2xl font-bold text-gray-800">
-                    Directivas
-                </h1>
-
-                <p class="text-gray-500 -mt-6">
-                    Gestiona las Directivas
-                </p>
-            </div>
-
-        </div>
-
-        <button id="btn-crear-persona"
-            class="inline-flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition text-sm">
-
-            <x-heroicon-o-plus class="w-5 h-5" />
-            <span>Nueva Directiva</span>
-
-        </button>
-    </div>
-
-    <div class="grid grid-cols-4 gap-6 mb-5">
-        <x-cards.card-stat title="Total Personas" texto="Registradas" value="125">
-
-            <x-slot:icon>
-                <x-heroicon-o-user-group class="w-10 h-10 text-green-600" />
-            </x-slot:icon>
-        </x-cards.card-stat>
-
-        <x-cards.card-stat title="Activos" texto="80% del total" value="125">
-
-            <x-slot:icon>
-                <x-heroicon-c-user-plus class="w-10 h-10 text-green-600" />
-            </x-slot:icon>
-        </x-cards.card-stat>
-
-        <x-cards.card-stat title="Inactivos" texto="1% del total" value="100">
-
-            <x-slot:icon>
-                <x-heroicon-c-user-minus class="w-10 h-10 text-green-600" />
-            </x-slot:icon>
-        </x-cards.card-stat>
-
-        <x-cards.card-stat title="Otros" texto="En desarrollo" value="10">
-
-            <x-slot:icon>
-                <x-heroicon-o-calendar-days class="w-10 h-10 text-green-600" />
-            </x-slot:icon>
-        </x-cards.card-stat>
-
-    </div>
-
-    <x-crud.panel modal="crear-directiva">
-
+    <x-crud.header title="Directiva" subtitle="Gestione la Directiva">
         <x-slot:icon>
-            <x-heroicon-o-user-group class="w-6 h-6 text-green-600" />
+            <x-heroicon-s-user-group class="w-7 h-7 text-green-600" />
         </x-slot:icon>
+        <x-slot:actions>
+            <div id="botones">
+                <button id="btn-crear-directiva"
+                    class="inline-flex items-center gap-2 px-2 py-1 bg-green-600 hover:bg-green-700 text-white rounded-lg transition">
+                    <x-heroicon-o-plus class="w-5 h-5" />
+                    <span>Nueva Directiva</span>
+                </button>
+            </div>
+        </x-slot:actions>
+    </x-crud.header>
 
-        @php
+    <div id="panel-body">
+         
+        <x-crud.panel modal="crear-directiva">
+
+            <x-slot:icon>
+                <x-heroicon-o-user-group class="w-6 h-6 text-green-600" />
+            </x-slot:icon>
+
+            @php
             $columnas = [
                 ['contenido' => 'Nombre'],
-                ['contenido' => 'Nombre Whatsapp'],
-                ['contenido' => 'Telefono'],
+                ['contenido' => 'Nom. Directiva'],
+                ['contenido' => 'Cargo'],
+                ['contenido' => 'Usuario'],
                 ['contenido' => 'Estado'],
                 ['contenido' => 'Acciones'],
-            ];
-        @endphp
+                ];
+            @endphp
 
-        <div class="tabla-scroll h-full">
+            <div class="overflow-x-auto">
+                <x-crud.table id="table_directiva" :columnas="$columnas" />
+            </div>
 
-            <x-crud.table id="table_personal" :columnas="$columnas" />
-        </div>
+        </x-crud.panel>
 
-    </x-crud.panel>
+        <x-form.drawer modal="crear-directiva" title="Crear Directiva" subtitle="Complete la información" width="sm"
+            formId="form-crear-directiva" textoGuardar="Directiva">
 
-    <x-form.modal title="Crear Directiva" modal="crear-directiva" formId="form-crear-directiva" textoGuardar="Directiva">
+            <x-slot:icon>
+                <x-heroicon-o-user class="w-7 h-7 text-green-600" />
+            </x-slot:icon>
 
-        <input type="hidden" name="id_iglesia" value="1">
+            <!-- Aquí van los inputs -->
 
-        <x-form.input label="Nombre" name="nombre" />
+            <div class="space-y-4">
 
-        <x-form.input label="Cargo" name="Cargo" />
+                <x-form.input label="Nombre " name="nombre" placeholder="Ej. Juan Pérez" :obligatorio="true"
+                    maxlength="20">
+                    <x-slot:icon>
+                        <x-heroicon-s-users class="w-5" />
+                    </x-slot:icon>
+                </x-form.input>
 
-        <x-form.checkbox label="Activo" name="estado" :checked="true" />
+                <!-- @if(Auth::user()->iglesia_id) -->
+                <!-- @endif --> 
+                <x-form.select label="Directiva " name="id_directiva" placeholder="Ej. Alabanza" :obligatorio="true" maxlength="20" icon="building" />
 
-    </x-form.modal>
+                <x-form.select label="Cargo" name="id_cargo" placeholder="Ej. Lider" :obligatorio="true" maxlength="50" icon="book-user" />
+                  
+
+                <div class="md:col-span-2">
+                    <x-form.input label="Correo electrónico" name="correo" placeholder="Ej. Prueba@example.com" :obligatorio="true">
+                        <x-slot:icon>
+                            <x-heroicon-s-envelope class="w-5" />
+                        </x-slot:icon>
+                    </x-form.input>
+                </div>
+
+                <div class="md:col-span-2 div-contrasena">
+                    <x-form.input label="Contraseña" name="password" placeholder="••••••••" type="password" :obligatorio="true" autocomplete="new-password">
+                        <x-slot:icon>
+                            <x-heroicon-o-lock-closed class="w-5" />
+                        </x-slot:icon>
+                    </x-form.input>
+
+                </div>
+
+                <div class="md:col-span-2 div-contrasena">
+                    <x-form.input label="Confirmar Contraseña" name="confirmar_password" placeholder="••••••••" type="password" autocomplete="new-password" :obligatorio="true">
+                        <x-slot:icon>
+                            <x-heroicon-s-lock-closed class="w-5" />
+                        </x-slot:icon>
+                    </x-form.input>
+                </div>
+
+                <div class="md:col-span-2 check">
+                    <x-form.checkbox label="¿Cambiar contraseña?"  name="check_password" />
+                </div>
+                
+            </div>
+
+        </x-form.drawer>
+    </div>
 
 </x-app-layout>
-{{-- @vite('resources/js/directiva/directivas.js') --}}
+
+@vite('resources/js/directiva/directiva.js')

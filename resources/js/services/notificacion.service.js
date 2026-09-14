@@ -11,11 +11,9 @@ export default class NotificacionService {
     }
 
     inicializar() {
-
         this.botonCerrar?.addEventListener('click', () => {
             this.ocultar();
         });
-
     }
 
     success(mensaje, titulo = 'Éxito') {
@@ -59,8 +57,7 @@ export default class NotificacionService {
 
         // Mensaje
         this.mensaje.textContent = mensaje;
-        this.mensaje.className = `text-sm mt- ${estilos.mensaje}`;
-
+        this.mensaje.className = `text-sm ${estilos.mensaje}`;
         this.alerta.classList.remove('hidden');
 
         requestAnimationFrame(() => {

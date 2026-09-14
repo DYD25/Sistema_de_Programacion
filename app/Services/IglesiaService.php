@@ -16,14 +16,14 @@ class IglesiaService
     }
 
     public function seleccionar(int $iglesiaId): array
-{
-    session([
-        'iglesia_id' => $iglesiaId
-    ]);
+    {
+        session([
+            'iglesia_id' => $iglesiaId
+        ]);
 
-    return [
-        'success' => true,
-        'message' => 'Iglesia seleccionada correctamente.'
-    ];
-}
+        return [
+            'success' => true,
+            'message' => 'Iglesia seleccionada correctamente.'
+        ];
+    }
 }

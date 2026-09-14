@@ -4,6 +4,7 @@ import './bootstrap';
 import Alpine from 'alpinejs';
 import Services from './services';
 
+
 window.Services = Services;
 window.Alpine = Alpine;
 

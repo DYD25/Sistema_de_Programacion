@@ -389,7 +389,7 @@ export default class ChartService {
 
     }
 
-    crearSparkline(id, series = [], color = '#16a34a', alto =45) {
+    crearSparkline(id, series = [], color = '#16a34a', alto = 45) {
 
         const elemento = document.getElementById(id);
 
@@ -445,7 +445,7 @@ export default class ChartService {
 
     }
 
-    crearMiniBar(id, series = [], color = '#16a34a', alto =45) {
+    crearMiniBar(id, series = [], color = '#16a34a', alto = 45) {
 
         const elemento = document.getElementById(id);
 
@@ -492,7 +492,7 @@ export default class ChartService {
 
     }
 
-    crearMiniLinea(id, series = [], color = '#2563eb', alto =45) {
+    crearMiniLinea(id, series = [], color = '#2563eb', alto = 45) {
 
         const elemento = document.getElementById(id);
 
@@ -548,15 +548,14 @@ export default class ChartService {
             this.charts[id].updateSeries([valor]);
 
             return;
-
         }
 
         const chart = new ApexCharts(elemento, {
 
             chart: {
                 type: 'radialBar',
-                height: 120,
-                width: 110,
+                height: 50,
+                // width: 100,
                 sparkline: {
                     enabled: true
                 }
@@ -571,7 +570,7 @@ export default class ChartService {
                 radialBar: {
 
                     hollow: {
-                        size: '20%'
+                        size: '45%'
                     },
 
                     dataLabels: {
@@ -590,33 +589,87 @@ export default class ChartService {
 
             }
 
-            // plotOptions: {
-
-            //     radialBar: {
-
-            //         hollow: {
-            //             size: '45%'      // agujero más pequeño
-            //         },
-
-            //         track: {
-            //             background: '#F3F4F6',
-            //             strokeWidth: '100%'
-            //         },
-
-            //         dataLabels: {
-            //             show: false
-            //         }
-
-            //     }
-
-            // },
-
         });
 
         chart.render();
 
         this.charts[id] = chart;
 
+    }
+
+    crearMiniBarComparativo(id, series = [], labels = [], alto = 55) {
+
+        const elemento = document.getElementById(id);
+
+        if (!elemento) return;
+
+        if (this.charts[id]) {
+
+            this.charts[id].updateOptions({
+                xaxis: {
+                    categories: labels
+                }
+            });
+
+            this.charts[id].updateSeries([{
+                data: series
+            }]);
+
+            return;
+        }
+
+        const chart = new ApexCharts(elemento, {
+
+            chart: {
+                type: 'bar',
+                height: alto,
+                toolbar: {
+                    show: false
+                },
+                sparkline: {
+                    enabled: true
+                }
+            },
+
+            series: [{
+                data: series
+            }],
+
+            colors: [
+                '#16a34a',
+                '#ef4444'
+            ],
+
+            plotOptions: {
+                bar: {
+                    horizontal: true,
+                    distributed: true,
+                    barHeight: '45%',
+                    borderRadius: 3
+                }
+            },
+
+            xaxis: {
+                categories: labels
+            },
+
+            dataLabels: {
+                enabled: false
+            },
+
+            tooltip: {
+                enabled: true
+            },
+
+            legend: {
+                show: false
+            }
+
+        });
+
+        chart.render();
+
+        this.charts[id] = chart;
     }
 
 

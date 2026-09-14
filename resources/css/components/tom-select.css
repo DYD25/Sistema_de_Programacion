@@ -1,4 +1,4 @@
-.ts-control {
+.select-iglesia .ts-control {
     @apply !bg-green-800 !text-white !border-green-700 rounded-md !text-sm;
 }
 
@@ -6,14 +6,65 @@
     @apply !text-white;
 }
 
-.ts-dropdown {
+/* color de fondo del dropdown */
+.select-iglesia .ts-dropdown { 
     @apply !bg-emerald-100 border !border-green-200 !rounded-md shadow-md !mt-0 ;
+    font-size: 1rem !important;
 }
 
-.ts-dropdown .option {
+/* color de texto de los elementos del dropdown */
+.select-iglesia .ts-dropdown .option { 
     @apply !text-gray-700 !text-sm;
 }
 
-.ts-dropdown .active {
+/* color de fondo del elemento activo */
+.select-iglesia .ts-dropdown .active { 
     @apply !bg-green-200 !text-green-700;
 }
+
+/* -------------select-general---------------- */
+
+.select-general .ts-control {
+    @apply !border !border-slate-200 !relative !bg-white !text-slate-700
+        !shadow-sm rounded-md !px-4 !py-2.5 transition-all duration-300;
+    font-size: 1rem;
+}
+
+.select-general .ts-control:focus-within {
+    @apply !border-[#1FA6A6]
+        !ring-4
+        !ring-[#1FA6A6]/20;
+}
+
+.select-general .ts-control input {
+    @apply !text-slate-700;
+    font-size: 1rem;
+}
+
+.select-general .ts-control input::placeholder {
+    @apply !text-slate-400;
+    opacity: 1;
+}
+
+.select-general .ts-dropdown {
+    @apply !bg-white !border !border-slate-200     
+            !rounded-md shadow-md !mt-0;
+    font-size: 1rem !important;
+}
+
+.select-general .ts-dropdown .option {
+    @apply !text-slate-700 !px-3 !py-2.5;
+}
+
+.select-general .ts-dropdown .active {
+    @apply !bg-[#1FA6A6]/10  !text-[#21783E];
+}
+
+.select-general .ts-control:has(.select-icon) .item {
+    padding-left: 1.0rem !important;
+}
+
+.select-general .ts-control:has(.select-icon) input {
+    padding-left: 1.0rem !important;
+}
+
