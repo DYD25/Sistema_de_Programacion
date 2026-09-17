@@ -5,8 +5,9 @@ namespace App\Http\Requests;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
-class DirectivaMiembroRequest extends FormRequest
+class CargoRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,14 +27,11 @@ class DirectivaMiembroRequest extends FormRequest
         return [
             'nombre' => [
                 'required',
+                Rule::unique('cargos', 'nombre')->ignore($this->id),
                 'string',
                 'max:20',
-                'regex:/^[\pL\s]+$/u',
             ],
-            'correo' => 'required|max:50',
-            'password' => 'sometimes|nullable|min:10',
-            'id_cargo' => 'required',
-            'id_directiva' => 'required',
+            'descripcion' => 'required|max:100',
         ];
     }
 
@@ -41,15 +39,11 @@ class DirectivaMiembroRequest extends FormRequest
     {
         return [
             'nombre.required' => 'El nombre es obligatorio.',
-            'nombre.regex' => 'El nombre solo puede contener letras y espacios.',
+            'nombre.unique' => 'El nombre ya se encuentra registrado.',
+            'nombre.string' => 'El nombre solo puede contener letras, números y espacios.',
             'nombre.max' => 'El nombre no puede exceder 20 caracteres.',
-            'correo.required' => 'El correo electrónico es obligatorio.',
-            'correo.max' => 'El correo electrónico no puede exceder 50 caracteres.',
-            'password.required' => 'La contraseña es obligatoria.',
-            'password.min' => 'La contraseña debe tener al menos 10 caracteres.',
-            'cargo_id.required' => 'El cargo es obligatorio.',
-            'directiva_id.required' => 'La directiva es obligatoria.',
-
+            'descripcion.required' => 'La descripción es obligatoria.',
+            'descripcion.max' => 'La descripción no puede exceder 100 caracteres.',
         ];
     }
 

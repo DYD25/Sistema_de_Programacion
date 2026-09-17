@@ -3,14 +3,14 @@
 namespace App\Services;
 
 use Exception;
-use App\Repositories\DirectivaMiembroRepository;
+use App\Repositories\DirectivoRepository;
 use App\Services\ContextoService;
 
-class DirectivaMiembroService
+class DirectivoService
 {
 
     public function __construct(
-        protected DirectivaMiembroRepository $directivaMiembroRepository, protected ContextoService $contextoService)
+        protected DirectivoRepository $directivoRepository, protected ContextoService $contextoService)
     { }
 
     public function obtenerDatos(): array
@@ -20,7 +20,7 @@ class DirectivaMiembroService
             return [];
         }
      
-        $directivas = $this->directivaMiembroRepository->listar($id_iglesia);
+        $directivas = $this->directivoRepository->listar($id_iglesia);
 
         return [
             'data' => $directivas
@@ -29,7 +29,7 @@ class DirectivaMiembroService
 
     public function obtenerDirectivas(): array
     {
-        $directivas = $this->directivaMiembroRepository->listarDirectivas();
+        $directivas = $this->directivoRepository->listarDirectivas();
 
         return [
             'data' => $directivas
@@ -38,7 +38,7 @@ class DirectivaMiembroService
 
     public function obtenerCargos(): array
     {
-        $cargos = $this->directivaMiembroRepository->listarCargos();
+        $cargos = $this->directivoRepository->listarCargos();
 
         return [
             'data' => $cargos
@@ -54,8 +54,8 @@ class DirectivaMiembroService
         $respusta_usuario =  $this->validarUsuarioExistente($data['correo'], false);
         if($respusta_usuario) return $respusta_usuario;
         
-        $id_usuario = $this->directivaMiembroRepository->registrarUsuario($data);
-        $this->directivaMiembroRepository->guardarDirectivaMiembro($data, $id_iglesia,$id_usuario);
+        $id_usuario = $this->directivoRepository->registrarUsuario($data);
+        $this->directivoRepository->guardarDirectivo($data, $id_iglesia,$id_usuario);
 
         return [
             'mensaje' => 'Integrante de la directiva, registrado correctamente.'
@@ -71,11 +71,11 @@ class DirectivaMiembroService
         $respusta_usuario =  $this->validarUsuarioExistente($data['correo'], true);
         if($respusta_usuario) return $respusta_usuario;
         
-        $this->directivaMiembroRepository->actualizarDirectivaMiembro($data, $id_iglesia);
-        $this->directivaMiembroRepository->actualizarDatoUsuario('name', $data['nombre'], $data['correo']);
+        $this->directivoRepository->actualizarDirectivo($data, $id_iglesia);
+        $this->directivoRepository->actualizarDatoCargo('name', $data['nombre'], $data['correo']);
 
         if(!empty($data['password'])){
-            $this->directivaMiembroRepository->actualizarDatoUsuario('password', $data['password'], $data['correo']);
+            $this->directivoRepository->actualizarDatoCargo('password', $data['password'], $data['correo']);
         }
 
         return [
@@ -86,7 +86,7 @@ class DirectivaMiembroService
     public function procesarParaEstado(array $data)
     {
         $id_iglesia = $this->contextoService->obtenerIglesiaId();   
-        $this->directivaMiembroRepository->actualizarEstadoDirectivaMiembros($data, $id_iglesia);
+        $this->directivoRepository->actualizarEstadoDirectivo($data, $id_iglesia);
 
         return [
             'mensaje' => 'Estado actualizado correctamente.'    
@@ -96,8 +96,8 @@ class DirectivaMiembroService
     public function procesarParaEliminar(array $data)
     {
         $id_iglesia = $this->contextoService->obtenerIglesiaId();
-        $this->directivaMiembroRepository->eliminarDirectivaMiembros($data['id'], $id_iglesia);
-        $this->directivaMiembroRepository->eliminarUsuarios($data['correo']);
+        $this->directivoRepository->eliminarDirectivo($data['id'], $id_iglesia);
+        $this->directivoRepository->eliminarUsuarios($data['correo']);
 
         return [
             'mensaje' => 'Integrante de la directiva, eliminado  correctamente.' 
@@ -106,7 +106,7 @@ class DirectivaMiembroService
 
     public function validarCargaDirectivaExistente( int $id_cargo, int $id_directiva,int $id_iglesia)
     {
-        if($this->directivaMiembroRepository->existeDirectivaCargo( $id_cargo, $id_directiva,$id_iglesia)){
+        if($this->directivoRepository->existeDirectivoCargo( $id_cargo, $id_directiva,$id_iglesia)){
             return [
                 'excepcion' => true,
                 'mensaje' => "El cargo seleccionado ya existe en esta directiva.",

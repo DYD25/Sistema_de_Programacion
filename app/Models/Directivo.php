@@ -2,17 +2,22 @@
 
 namespace App\Models;
 
-use app\Models\Iglesia;
 use App\Models\User;
 use App\Models\Cargo;
 use App\Models\Directiva;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Ulids\HasUlids;
 use Illuminate\Database\Eloquent\Model;
 
-class DirectivaMiembro extends Model
+class Directivo extends Model
 {
     use HasFactory;
+    use HasUlids;
+    
+    public $incrementing = false;
+
+    protected $keyType = 'string';
     protected $guarded = ['id'];
 
     public function usuario()

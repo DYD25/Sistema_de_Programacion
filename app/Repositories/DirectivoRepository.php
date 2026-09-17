@@ -2,32 +2,30 @@
 
 namespace App\Repositories;
 
-use App\Models\DirectivaMiembro;
+use App\Models\Directivo;
 use App\Models\Directiva;
 use App\Models\Cargo;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 
-class DirectivaMiembroRepository
+class DirectivoRepository
 {
-
-
     public function listar(int $id_iglesia)
     {
-        return DirectivaMiembro::with([
+        return Directivo::with([
             'usuario:id,name,email',
             'cargo:id,nombre',
             'directiva:id,nombre',
-        ])->select('id', 'usuario_id', 'cargo_id', 'directiva_id','estado')
+        ])->select('id', 'usuario_id', 'cargo_id', 'directiva_id','estado', 'created_at')
             ->where('iglesia_id', $id_iglesia)
             ->get();
     }
 
 
-    public function listarDirectivas()
+    public function listarDirectivos()
     {
-        return Directiva::where('estado', 1)
-            ->orderBy('nombre')
+        return Directivo::where('estado', 1)
+            ->orderBy('id')
             ->get();
     }
 
@@ -48,9 +46,9 @@ class DirectivaMiembroRepository
         return $user->id;
     }
 
-    public function guardarDirectivaMiembro(array $datos, int $id_iglesia,int $id_usuario): void
+    public function guardarDirectivo(array $datos, int $id_iglesia,int $id_usuario): void
     {
-        DirectivaMiembro::create([
+        Directivo::create([
             'usuario_id' => $id_usuario,
             'cargo_id' => $datos['id_cargo'],
             'directiva_id' => $datos['id_directiva'],
@@ -59,29 +57,29 @@ class DirectivaMiembroRepository
         ]);
     }
 
-    public function actualizarDirectivaMiembro(array $datos, int $id_iglesia): void
+    public function actualizarDirectivo(array $datos, int $id_iglesia): void
     {
-        DirectivaMiembro::where('id', $datos['id'])->where('iglesia_id', $id_iglesia)
+        Directivo::where('id', $datos['id'])->where('iglesia_id', $id_iglesia)
             ->update([
                 'cargo_id' => $datos['id_cargo'],
                 'directiva_id' => $datos['id_directiva'],
             ]);
     }
 
-    public function actualizarDatoUsuario(string $campo, string $valor, string $correo): void
+    public function actualizarDatoCargo(string $campo, string $valor, string $correo): void
     {
         User::where('email', $correo)->update([$campo => $valor,]);
     }
     
-    public function actualizarEstadoDirectivaMiembros(array $datos, int $id_iglesia): void
+    public function actualizarEstadoDirectivo(array $datos, int $id_iglesia): void
     {
-        DirectivaMiembro::where('id', $datos['id'])->where('iglesia_id', $id_iglesia)
+        Directivo::where('id', $datos['id'])->where('iglesia_id', $id_iglesia)
             ->update([
                 'estado' => !$datos['estado'],
             ]);
     }
     
-    public function eliminarDirectivaMiembros(int $id, int $id_iglesia): void
+    public function eliminarDirectivo(int $id, int $id_iglesia): void
     {
         DirectivaMiembro::where('id', $id)->where('iglesia_id', $id_iglesia)   
             ->delete();

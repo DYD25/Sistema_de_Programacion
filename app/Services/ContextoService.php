@@ -18,7 +18,7 @@ class ContextoService
         return auth()->user();
     }
 
-    public function obtenerIglesiaId(): ?int
+    public function obtenerIglesiaId(): ?string
     {
         $id = session('iglesia_id');
 

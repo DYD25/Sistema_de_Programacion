@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Services\DirectivaMiembroService;
 use App\Http\Requests\DirectivaMiembroRequest;
 
-class DirectivaMiembroController extends Controller
+class PermisoController extends Controller
 {
     public function __construct(
         protected DirectivaMiembroService $directivaMiembroService,
@@ -16,8 +16,10 @@ class DirectivaMiembroController extends Controller
 
     public function index()
     {
-        return view('directiva.index');
+        return view('permiso.index');
     }
+
+
 
     public function data()
     {
@@ -95,16 +97,13 @@ class DirectivaMiembroController extends Controller
             $data = $request->all();
             $response = $this->directivaMiembroService->procesarParaEliminar($data);
             return response()->json($response);
-        } catch (Throwable $t) { dd([
-                'error' => $t->getMessage(),
-                'line' => $t->getLine(),
-                'file' => $t->getFile(),
-            ]);
+        } catch (Throwable $t) { 
             return response()->json(['error' => true, 'mensaje' => 'No se pudo eliminar la persona.'], 500);
         }
     }
-
-
-
-
 }
+// dd([
+//     'error' => $t->getMessage(),
+//     'line' => $t->getLine(),
+//     'file' => $t->getFile(),
+// ]);

@@ -27,7 +27,7 @@ export default class IglesiaService {
     }
 
     async seleccionar(id) {
-
+        
         if (!id) {
             this.mostrarContenido(false);
             Services.alerta.advertencia('Debe seleccionar una iglesia para visualizar y administrar la información.');

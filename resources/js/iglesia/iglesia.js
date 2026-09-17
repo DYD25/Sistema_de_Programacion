@@ -1,7 +1,7 @@
 import Services from '../services';
 import { createIcons, icons } from 'lucide';
 
-class Directiva {
+class Iglesia {
     constructor() {
         this.enviarDatos = [];
     }
@@ -29,20 +29,20 @@ class Directiva {
     }
 
     inicializarEventos() {
-        Services.formulario.onSubmit('form-crear-directiva', () => this.guardarDirectiva());
-        Services.formulario.onClick('btn-crear-directiva', () => this.directivaModal('nuevo'));
-        Services.formulario.onClick('btn-cancelar', () => Services.drawer.cerrar('crear-directiva'));
+        Services.formulario.onSubmit('form-crear-iglesia', () => this.guardarIglesia());
+        Services.formulario.onClick('btn-crear-iglesia', () => this.iglesiaModal('nuevo'));
+        Services.formulario.onClick('btn-cancelar', () => Services.drawer.cerrar('crear-iglesia'));
     }
 
     async consultarDatosTable() {
-        let respuesta = await this.consultaGeneral('consultar los datos', 'consultar-datos-tabla-directiva', { loader: 'progress' });
+        let respuesta = await this.consultaGeneral('consultar los datos', 'consultar-datos-tabla-iglesia', { loader: 'progress' });
         if (!respuesta) return;
         this.cargarTabla(respuesta.data);
     }
 
     cargarTabla(datos) {
         Services.tabla.crear({
-            id: '#table_directiva',
+            id: '#table_iglesia',
             data: datos,
             columns: [
                 {
@@ -66,7 +66,8 @@ class Directiva {
                         `;
                     }
                 },
-                { data: 'descripcion' },
+                { data: 'direccion' },
+                { data: 'ciudad' },
                 { data: 'created_at',
                     render: function (data) {
                         if (!data) return '';
@@ -97,22 +98,23 @@ class Directiva {
     }
 
     btnEditar() {
-        Services.tabla.evento('#table_directiva', '.btn-editar', (directiva) => {
-            this.directivaModal('editar');
-            document.getElementById('nombre').value = directiva.nombre;
-            document.getElementById('descripcion').value = directiva.descripcion;
-            this.directivaId = directiva.id;
+        Services.tabla.evento('#table_iglesia', '.btn-editar', (iglesia) => {
+            this.iglesiaModal('editar');
+            document.getElementById('nombre').value = iglesia.nombre;
+            document.getElementById('direccion').value = iglesia.direccion;
+            document.getElementById('ciudad').value = iglesia.ciudad;
+            this.iglesiaId = iglesia.id;
         });
     }
 
     btnEstado() {
-        Services.tabla.evento('#table_directiva', '.btn-estado', async (directiva) => {
+        Services.tabla.evento('#table_iglesia', '.btn-estado', async (iglesia) => {
             this.enviarDatos = {
-                id: directiva.id,
-                estado: directiva.estado,
+                id: iglesia.id,
+                estado: iglesia.estado,
             };
 
-            let respuesta = await this.consultaGeneral('actualizar el estado', 'estado-directiva', { loader: 'progress' });
+            let respuesta = await this.consultaGeneral('actualizar el estado', 'estado-iglesia', { loader: 'progress' });
             if (!respuesta) return;
 
             Services.notificacion.success(respuesta.mensaje);
@@ -121,10 +123,10 @@ class Directiva {
     }
 
     btnEliminar() {
-        Services.tabla.evento('#table_directiva', '.btn-eliminar', (directiva) => {
+        Services.tabla.evento('#table_iglesia', '.btn-eliminar', (iglesia) => {
             Services.swal.fire({
                 title: `Eliminar Registro`,
-                html: `¿Está seguro de eliminar el registro de <b>${directiva.nombre}?</b> </br> Esta acción no se puede deshacer.`,
+                html: `¿Está seguro de eliminar el registro de <b>${iglesia.nombre}?</b> </br> Esta acción no se puede deshacer.`,
                 icon: 'question',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
@@ -133,7 +135,7 @@ class Directiva {
                 cancelButtonText: 'Cancelar'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    this.eliminar(directiva.id);
+                    this.eliminar(iglesia.id);
                 }
             });
         });
@@ -142,57 +144,57 @@ class Directiva {
     async eliminar(id) {
         this.enviarDatos = { id: id, };
         
-        let respuesta = await this.consultaGeneral('eliminar la directiva', 'eliminar-directiva', { loader: 'progress' });
+        let respuesta = await this.consultaGeneral('eliminar el iglesia', 'eliminar-iglesia', { loader: 'progress' });
         if (!respuesta) return;
 
         Services.notificacion.success(respuesta.mensaje);
         this.consultarDatosTable();
     }
 
-    directivaModal(tipo) {
+    iglesiaModal(tipo) {
         let titulo = document.getElementById('titulo-modal');
         let texto = document.getElementById('span-guardar');
         let icono = document.getElementById('icono-guardar');
         let mensajeLoading = document.getElementById('mensaje-loading');
 
         if (tipo === 'nuevo') {
-            titulo.textContent = 'Registrar nuevo directiva';
-            texto.textContent = 'Guardar directiva';
+            titulo.textContent = 'Registrar nueva Iglesia';
+            texto.textContent = 'Guardar Iglesia';
             icono.setAttribute('data-lucide', 'save-check');
             mensajeLoading.textContent = 'Guardando información...';
-            this.personaId = null;
+            this.iglesiaId = null;
 
         } else {
-            titulo.textContent = 'Editar directiva';
-            texto.textContent = 'Actualizar directiva';
+            titulo.textContent = 'Editar Iglesia';
+            texto.textContent = 'Actualizar Iglesia';
             icono.setAttribute('data-lucide', 'square-pen');
             mensajeLoading.textContent = 'Actualizando información...';
         }
 
         createIcons({ icons });
-        Services.formulario.reiniciar('form-crear-directiva');
-        Services.drawer.abrir('crear-directiva');
+        Services.formulario.reiniciar('form-crear-iglesia');
+        Services.drawer.abrir('crear-iglesia'); 
         this.enviarDatos = [];
     }
 
-    async guardarDirectiva() {
-        Services.formulario.limpiarErroresCampos('form-crear-directiva');
-        this.enviarDatos = Services.formulario.obtenerDatos('form-crear-directiva');
+    async guardarIglesia() {
+        Services.formulario.limpiarErroresCampos('form-crear-iglesia');
+        this.enviarDatos = Services.formulario.obtenerDatos('form-crear-iglesia');
         
         let ruta = 'crear';
-        if (this.directivaId) {
-            this.enviarDatos.id = this.directivaId;
+        if (this.iglesiaId) {
+            this.enviarDatos.id = this.iglesiaId;
             ruta = 'actualizar'
         }
 
-        let respuesta = await this.consultaGeneral(ruta + ' la directiva', ruta+'-directiva', { loader: { type: 'drawer', id: 'crear-directiva' } });
+        let respuesta = await this.consultaGeneral(ruta + ' el iglesia', ruta+'-iglesia', { loader: { type: 'drawer', id: 'crear-iglesia' } });
         if (!respuesta) return;
 
-        Services.drawer.cerrar('crear-directiva');
+        Services.drawer.cerrar('crear-iglesia');
         Services.notificacion.success(respuesta.mensaje);
         this.consultarDatosTable();
     }
 }
 
-const directiva = new Directiva();
-directiva.cargarMetodos();
+const iglesia = new Iglesia();
+iglesia.cargarMetodos();

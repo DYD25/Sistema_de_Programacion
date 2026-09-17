@@ -29,7 +29,6 @@ export default class AccionService {
         }
 
         html += `</div>`;
-
         return html;
     }
 
