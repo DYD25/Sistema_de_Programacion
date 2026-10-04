@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Model;
 
-class Directiva extends Model
+class Rol extends Model
 {
     use HasFactory;
     use HasUlids;
@@ -15,5 +15,5 @@ class Directiva extends Model
 
     protected $keyType = 'string';
     protected $guarded = ['id'];
-    
+
 }

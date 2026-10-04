@@ -3,29 +3,40 @@
 namespace App\Repositories;
 
 use App\Models\Cargo;
+use Illuminate\Support\Facades\Auth;
+
 
 class CargoRepository
 {
-    public function listar()
+    public function listar(string $id_iglesia): array
     {
-        return Cargo::all();
+        return Cargo::where(function ($query) use ($id_iglesia) {
+        $query
+        ->orWhereNull('iglesia_id')
+        ->orWhere('iglesia_id', $id_iglesia)
+        ->orWhere('iglesia_id', '');
+        })->get()->toArray();
     }
 
-    public function registrarCargo(array $datos): void
+    public function registrarCargo(array $datos, string $id_iglesia): void
     {
         Cargo::create([
+            'iglesia_id' => $id_iglesia,
             'nombre' => $datos['nombre'],
             'descripcion' => $datos['descripcion'],
-            'estado' => 1,
+            'estado' => 1,    
+            'created_by'=>Auth::user()->id,
         ]);
     }
 
-    public function actualizarCargo(array $datos): void
+    public function actualizarCargo(array $datos, string $id_iglesia): void
     {
         Cargo::where('id', $datos['id'])
+            ->where('iglesia_id', $id_iglesia)
             ->update([
                 'nombre' => $datos['nombre'],
                 'descripcion' => $datos['descripcion'],
+                'created_by'=>Auth::user()->id,
             ]);
     }
     
@@ -34,12 +45,15 @@ class CargoRepository
         Cargo::where('id', $datos['id'])
             ->update([
                 'estado' => !$datos['estado'],
+                'created_by'=>Auth::user()->id, 
             ]);
     }
     
-    public function eliminarCargo(string $id): void
+    public function eliminarCargo(string $id, string $id_iglesia): void
     {
-        Cargo::where('id', $id)->delete();
+        Cargo::where('id', $id)
+            ->where('iglesia_id', $id_iglesia)
+            ->delete();
     }
 
 }

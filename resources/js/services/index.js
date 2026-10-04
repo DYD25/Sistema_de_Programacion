@@ -13,6 +13,8 @@ import ChartService from './chart.service';
 import NotificacionService  from './notificacion.service';    
 import TooltipService from './tooltip.service';
 import RespuestaService from './respuesta.service';
+import UtilidadesService from './utilidades.service';
+import CheckboxMultipleService from './checkboxMultiple.service';
 import Swal from 'sweetalert2';
 
 
@@ -35,6 +37,8 @@ const Services = {
     chart: new ChartService(),
     tooltip: new TooltipService(),
     respuesta: new RespuestaService(),
+    utilidades: new UtilidadesService(),
+    checkboxMultiple: new CheckboxMultipleService(),
     swal: Swal,
 
 };

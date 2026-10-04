@@ -3,9 +3,11 @@
 namespace App\Repositories;
 
 use App\Models\Iglesia;
+use Illuminate\Support\Facades\Auth;
 
 class IglesiaRepository
 {
+
     public function obtenerTodas()
     {
         return Iglesia::orderBy('nombre')->where('estado', 1)->get();
@@ -23,6 +25,7 @@ class IglesiaRepository
             'direccion' => $datos['direccion'],
             'ciudad' => $datos['ciudad'],
             'estado' => 1,
+            'created_by'=>Auth::user()->id,
         ]);
     }
 
@@ -33,6 +36,7 @@ class IglesiaRepository
                 'nombre' => $datos['nombre'],
                 'direccion' => $datos['direccion'],
                 'ciudad' => $datos['ciudad'],
+                'created_by'=>Auth::user()->id,
             ]);
     }
     
@@ -41,6 +45,7 @@ class IglesiaRepository
         Iglesia::where('id', $datos['id'])
             ->update([
                 'estado' => !$datos['estado'],
+                'created_by'=>Auth::user()->id,
             ]);
     }
     

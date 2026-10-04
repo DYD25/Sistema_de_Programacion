@@ -99,16 +99,16 @@ table.dataTable tbody td {
 	height: 19px;
 }
 
+.w-15 {
+	width: 15rem;
+}
+
 .m-1 {
 	margin: 0.5rem;
 }
 
 .ml-20 {
 	margin-left: 5rem;
-}
-
-.ml-52 {
-	margin-left: 13rem;
 }
 
 .ml-56 {
@@ -119,9 +119,9 @@ table.dataTable tbody td {
 	margin-left: 15rem;
 }
 
-.-ml-18 {
-	margin-left: -8rem;
-}
+.-ml--9 {
+	margin-left: -9rem;
+}	
 
 .mb-20 {
 	margin-bottom: 5rem;
@@ -143,6 +143,10 @@ table.dataTable tbody td {
     left: 0.5rem;
 }
 
+.left-15 {
+    left: 15rem;
+}
+
 :root {
 	--azul-color: #587fff;
 	--azul-bg-hover: #f0f0fd;
@@ -160,6 +164,24 @@ table.dataTable tbody td {
 	--verder-bg-hover: #f0fdf4;
 	--verder-border: #9ffac0;
 
+	--azul-turquesa-color: #01a79b;
+	--azul-turquesa-bg-hover: #e6faf8;
+	--azul-turquesa-border: #9eedde;
+
+}
+
+.bg-verder {
+	background: var(--verder-bg-hover);
+	color: var(--verder-color);
+	border-radius: .3rem;
+	padding: .25rem .6rem;
+}
+
+.bg-rojo {
+	background: var(--rojo-bg-hover);
+	color: var(--rojo-color);
+	border-radius: .3rem;
+	padding: .25rem .6rem;
 }
 
 .btn-editar {
@@ -187,6 +209,17 @@ table.dataTable tbody td {
 
 .estado_inactivo:hover {
 	background: var(--amarillo-bg-hover);
+}
+
+.btn-asignar-areas,
+.btn-asignar-permisos {
+	color: var(--azul-turquesa-color);
+	border: 1px solid var(--azul-turquesa-border);
+}
+
+.btn-asignar-areas:hover,
+.btn-asignar-permisos:hover {
+	background: var(--azul-turquesa-bg-hover);
 }
 
 .btn-eliminar {
@@ -281,8 +314,8 @@ table.dataTable tbody td {
 }
 
 /* -------icono guardaf---- */
-#icono-cancelar,
-#icono-guardar {
+.icono-cancelar,
+.icono-guardar {
 	width: 20px;
 	height: 20px;
 }
@@ -320,4 +353,10 @@ table.dataTable tbody td {
 
 .tippy-box[data-theme~='light-border'] .tippy-arrow {
     color: #666565;
+}
+
+/* checkbos */
+.estilos-checkbox {
+	 @apply w-5 h-5 rounded-md border-slate-300 text-[#1FA6A6] 
+	 shadow-sm transition focus:ring-0 focus:outline-none focus:border-[#1FA6A6]
 }

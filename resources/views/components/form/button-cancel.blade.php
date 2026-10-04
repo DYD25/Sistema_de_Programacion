@@ -1,6 +1,6 @@
-@props(['modal'])
+@props(['modal', 'btnCancelar' => 'btn-cancelar'])
 
-<button id="btn-cancelar" {{ $attributes->merge([
+<button id="{{$btnCancelar}}" {{ $attributes->merge([
     'type' => 'button',
     'class' => '
         group
@@ -21,12 +21,13 @@
         hover:bg-gray-50
         hover:shadow-2xl
         active:translate-y-0
+        btn-cancelar
     '
 ]) }}
 >
 
     <div class="relative z-10 flex items-center justify-center gap-2">
-        <i id="icono-cancelar" data-lucide="x" class="w-4 h-4"></i>
+        <i id="icono-cancelar" data-lucide="x" class="icono-cancelar"></i>
 
         <span id="span-cancelar">
             Cancelar

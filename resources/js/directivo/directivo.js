@@ -89,14 +89,7 @@ class Directivo {
                 {
                     data: 'usuario.name',
                     render: function (data) {
-
-                        const iniciales = data
-                            .trim()
-                            .split(/\s+/)
-                            .slice(0, 2)
-                            .map(name => name.charAt(0).toUpperCase())
-                            .join('');
-
+                        let iniciales = Services.utilidades.inicialesNombre(data);
                         return `
                             <div class="flex items-center gap-3">
                                 <div class="avatar-iniciales">

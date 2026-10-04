@@ -28,7 +28,7 @@ class IglesiaRequest extends FormRequest
             'nombre' => [
                 'required',
                 Rule::unique('iglesias', 'nombre')->ignore($this->id),
-                'string',
+                'regex:/^[a-zA-Z0-9\s]+$/',
                 'max:20',
             ],
             'direccion' => [
@@ -46,7 +46,7 @@ class IglesiaRequest extends FormRequest
         return [
             'nombre.required' => 'El nombre es obligatorio.',
             'nombre.unique' => 'El nombre ya se encuentra registrado.',
-            'nombre.string' => 'El nombre solo puede contener letras, números y espacios.',
+            'nombre.regex' => 'El nombre solo puede contener letras, números y espacios.',
             'nombre.max' => 'El nombre no puede exceder 20 caracteres.',
             'direccion.required' => 'La dirección es obligatoria.',
             'direccion.unique' => 'La dirección ya se encuentra registrado.',

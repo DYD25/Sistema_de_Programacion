@@ -10,7 +10,8 @@
         name="{{ $name }}"
         id="{{ $name }}"
         {{ $attributes }}
-      class="w-5 h-5 rounded-md border-slate-300 text-[#1FA6A6] shadow-sm transition focus:ring-0 focus:outline-none focus:border-[#1FA6A6]">
+      class="estilos-checkbox">
+
 
     <span class="text-sm text-slate-600">
         {{ $label }}

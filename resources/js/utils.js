@@ -3,21 +3,6 @@ class PeticionService {
 
     constructor() { }
 
-    // async hacerPeticionPost(ruta = null, datos_enviar, es_formulario = false ,loader = true) {
-
-    //     let form_data = new FormData();
-
-    //     if (es_formulario) {
-    //         for (let [key, value] of datos_enviar.entries()) {
-    //             form_data.append(key, value);
-    //         }
-    //     }else{   
-    //         let csrf_token = document.querySelector('input[name="_token"]')?.value || '';
-    //         form_data.append("_token", csrf_token);
-    //         form_data.append("datos", JSON.stringify(datos_enviar));
-    //     }
-
-
     async request(ruta, { method = 'POST', data = {},  loader = true } = {}) {
 
         let formData = new FormData();

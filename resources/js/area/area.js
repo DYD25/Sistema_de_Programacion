@@ -1,7 +1,7 @@
 import Services from '../services';
 import { createIcons, icons } from 'lucide';
 
-class Cargo {
+class Area {
     constructor() {
         this.enviarDatos = [];
     }
@@ -29,33 +29,26 @@ class Cargo {
     }
 
     inicializarEventos() {
-        Services.formulario.onSubmit('form-crear-cargo', () => this.guardarCargo());
-        Services.formulario.onClick('btn-crear-cargo', () => this.cargoModal('nuevo'));
-        Services.formulario.onClick('btn-cancelar', () => Services.drawer.cerrar('crear-cargo'));
+        Services.formulario.onSubmit('form-crear-area', () => this.guardarArea());
+        Services.formulario.onClick('btn-crear-area', () => this.areaModal('nuevo'));
+        Services.formulario.onClick('btn-cancelar', () => Services.drawer.cerrar('crear-area'));
     }
 
     async consultarDatosTable() {
-        let respuesta = await this.consultaGeneral('consultar los datos', 'consultar-datos-tabla-cargo', { loader: 'progress' });
+        let respuesta = await this.consultaGeneral('consultar los datos', 'consultar-datos-tabla-area', { loader: 'progress' });
         if (!respuesta) return;
         this.cargarTabla(respuesta.data);
     }
 
     cargarTabla(datos) {
         Services.tabla.crear({
-            id: '#table_cargo',
+            id: '#table_areas',
             data: datos,
             columns: [
                 {
                     data: 'nombre',
                     render: function (data) {
-
-                        const iniciales = data
-                            .trim()
-                            .split(/\s+/)
-                            .slice(0, 2)
-                            .map(nombre => nombre.charAt(0).toUpperCase())
-                            .join('');
-
+                        let iniciales = Services.utilidades.inicialesNombre(data);
                         return `
                             <div class="flex items-center gap-3">
                                 <div class="avatar-iniciales">
@@ -67,6 +60,14 @@ class Cargo {
                     }
                 },
                 { data: 'descripcion' },
+                { data: 'usa_grupo',
+                    className: 'text-center',
+                    render: function (data) {
+                        return data == 1 
+                        ? `<span class="bg-verder">Sii</span>`
+                        : `<span class="bg-rojo">No</span>`;
+                    }
+                },
                 { data: 'created_at',
                     render: function (data) {
                         if (!data) return '';
@@ -78,7 +79,7 @@ class Cargo {
                     className: 'text-center',
                     render: function (data) {
                         return data == 1
-                            ? `<span class="estado-badge  estado-activo">Activo</span>`
+                            ? `<span class="estado-badge estado-activo">Activo</span>`
                             : `<span class="estado-badge estado-inactivo">Inactivo</span>`;
                     }
                 },
@@ -97,34 +98,31 @@ class Cargo {
     }
 
     btnEditar() {
-        Services.tabla.evento('#table_cargo', '.btn-editar', (cargo) => {
-            this.cargoModal('editar');
-            document.getElementById('nombre').value = cargo.nombre;
-            document.getElementById('descripcion').value = cargo.descripcion;
-            this.cargoId = cargo.id;
+        Services.tabla.evento('#table_areas', '.btn-editar', (area) => {
+            this.areaModal('editar');
+            document.getElementById('nombre').value = area.nombre;
+            document.getElementById('descripcion').value = area.descripcion;
+            document.getElementById('usa_grupo').checked = area.usa_grupo == 1;
+            this.areaId = area.id;
         });
     }
 
     btnEstado() {
-        Services.tabla.evento('#table_cargo', '.btn-estado', async (cargo) => {
+        Services.tabla.evento('#table_areas', '.btn-estado', async (area) => {
             this.enviarDatos = {
-                id: cargo.id,
-                estado: cargo.estado,
+                id: area.id,
+                estado: area.estado,
             };
 
-            let respuesta = await this.consultaGeneral('actualizar el estado', 'estado-cargo', { loader: 'progress' });
-            if (!respuesta) return;
-
-            Services.notificacion.success(respuesta.mensaje);
-            this.consultarDatosTable();
+            this.ejecutarBotones('actualizar el estado', 'estado-area');
         });
     }
 
     btnEliminar() {
-        Services.tabla.evento('#table_cargo', '.btn-eliminar', (cargo) => {
+        Services.tabla.evento('#table_areas', '.btn-eliminar', (area) => {
             Services.swal.fire({
                 title: `Eliminar Registro`,
-                html: `¿Está seguro de eliminar el registro de <b>${cargo.nombre}?</b> </br> Esta acción no se puede deshacer.`,
+                html: `¿Está seguro de eliminar el registro de <b>${area.nombre}?</b> </br> Esta acción no se puede deshacer.`,
                 icon: 'question',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
@@ -133,66 +131,66 @@ class Cargo {
                 cancelButtonText: 'Cancelar'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    this.eliminar(cargo.id);
+                    this.enviarDatos = { id: area.id, };
+                    this.ejecutarBotones('eliminar la area', 'eliminar-area');
                 }
             });
         });
     }
 
-    async eliminar(id) {
-        this.enviarDatos = { id: id, };
-        
-        let respuesta = await this.consultaGeneral('eliminar el cargo', 'eliminar-cargo', { loader: 'progress' });
+    async ejecutarBotones(mensajeError, ruta) {
+        let respuesta = await this.consultaGeneral(mensajeError, ruta, { loader: 'progress' });
         if (!respuesta) return;
 
         Services.notificacion.success(respuesta.mensaje);
         this.consultarDatosTable();
     }
 
-    cargoModal(tipo) {
+    areaModal(tipo) {
         let titulo = document.getElementById('titulo-modal');
         let texto = document.getElementById('span-guardar');
         let icono = document.getElementById('icono-guardar');
         let mensajeLoading = document.getElementById('mensaje-loading');
 
         if (tipo === 'nuevo') {
-            titulo.textContent = 'Registrar nuevo Cargo';
-            texto.textContent = 'Guardar Cargo';
+            titulo.textContent = 'Registrar Nuevo Area';
+            texto.textContent = 'Guardar Area';
             icono.setAttribute('data-lucide', 'save-check');
             mensajeLoading.textContent = 'Guardando información...';
             this.personaId = null;
 
         } else {
-            titulo.textContent = 'Editar Cargo';
-            texto.textContent = 'Actualizar Cargo';
+            titulo.textContent = 'Editar area';
+            texto.textContent = 'Actualizar area';
             icono.setAttribute('data-lucide', 'square-pen');
             mensajeLoading.textContent = 'Actualizando información...';
         }
 
         createIcons({ icons });
-        Services.formulario.reiniciar('form-crear-cargo');
-        Services.drawer.abrir('crear-cargo');
+        Services.formulario.reiniciar('form-crear-area');
+        Services.drawer.abrir('crear-area');
         this.enviarDatos = [];
     }
 
-    async guardarCargo() {
-        Services.formulario.limpiarErroresCampos('form-crear-cargo');
-        this.enviarDatos = Services.formulario.obtenerDatos('form-crear-cargo');
+    async guardarArea() {
+        Services.formulario.limpiarErroresCampos('form-crear-area');
+        this.enviarDatos = Services.formulario.obtenerDatos('form-crear-area');
+        this.enviarDatos.usa_grupo = document.getElementById('usa_grupo').checked ? 1 : 0;
         
         let ruta = 'crear';
-        if (this.cargoId) {
-            this.enviarDatos.id = this.cargoId;
+        if (this.areaId) {
+            this.enviarDatos.id = this.areaId;
             ruta = 'actualizar'
         }
 
-        let respuesta = await this.consultaGeneral(ruta + ' el cargo', ruta+'-cargo', { loader: { type: 'drawer', id: 'crear-cargo' } });
+        let respuesta = await this.consultaGeneral(ruta + ' el area', ruta+'-area', { loader: { type: 'drawer', id: 'crear-area' } });
         if (!respuesta) return;
 
-        Services.drawer.cerrar('crear-cargo');
+        Services.drawer.cerrar('crear-area');
         Services.notificacion.success(respuesta.mensaje);
         this.consultarDatosTable();
     }
 }
 
-const cargo = new Cargo();
-cargo.cargarMetodos();
+const area = new Area();
+area.cargarMetodos();

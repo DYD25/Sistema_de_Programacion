@@ -24,11 +24,7 @@ class CargoController extends Controller
                 $this->cargoService->obtenerDatos()
             );
         } catch (Throwable $t) {
-            dd([
-    'error' => $t->getMessage(),
-    'line' => $t->getLine(),
-    'file' => $t->getFile(),
-]);
+
             return response()->json([  'error' => true,'mensaje' => 'No fue posible obtener la información.' ], 500);
         }
     }
@@ -40,7 +36,7 @@ class CargoController extends Controller
             $response = $this->cargoService->procesarParaGuardar($data);
             return response()->json($response);
 
-        } catch (Throwable $t) {    
+        } catch (Throwable $t) {   
             return response()->json(['error' => true, 'mensaje' => 'No se pudo crear el cargo.'], 500);
         }
     }
@@ -53,6 +49,11 @@ class CargoController extends Controller
             return response()->json($response);
 
         } catch (Throwable $t) {    
+         dd([
+            'error' => $t->getMessage(),
+            'line' => $t->getLine(),
+            'file' => $t->getFile(),
+        ]); 
             return response()->json(['error' => true, 'mensaje' => 'No se pudieron actualizar los datos del cargo.'], 500);
         }
     }

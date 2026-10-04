@@ -23,13 +23,13 @@ const header = document.getElementById('header');
 document.getElementById('btn-menu').addEventListener('click', () => {
 
     sidebar.classList.toggle('sidebar-mini');
-    sidebar.classList.toggle('w-52');
-    sidebar.classList.toggle('w-20');
+    sidebar.classList.toggle('w-15');//Menu mini
+    layout.classList.toggle('ml-60');//Layout mini
+    
+    sidebar.classList.toggle('w-24');//Menu grande
+    layout.classList.toggle('ml-24');//Layout grande
 
-    layout.classList.toggle('ml-20');
-    layout.classList.toggle('ml-52');
-
-    header.classList.toggle('-ml-18');
+    header.classList.toggle('-ml--9');//Encabezado mini
 
     document.getElementById('usuario-sidebar')?.classList.toggle('justify-center');
     document.querySelector('.user-info')?.classList.toggle('hidden');

@@ -7,7 +7,7 @@ use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class CargoRequest extends FormRequest
+class RolRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,25 +25,25 @@ class CargoRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'nombre' => [
+            'nombre-rol' => [
                 'required',
-                Rule::unique('cargos', 'nombre')->ignore($this->id),
+                Rule::unique('rols', 'nombre')->ignore($this->id),
                 'regex:/^[a-zA-Z0-9\s]+$/',
                 'max:20',
             ],
-            'descripcion' => 'required|max:100',
+            'descripcion-rol' => 'required|max:100',
         ];
     }
 
     public function messages(): array
     {
         return [
-            'nombre.required' => 'El nombre es obligatorio.',
-            'nombre.unique' => 'El cargo ya se encuentra registrado.',
-            'nombre.regex' => 'El cargo solo puede contener letras, números y espacios.',
-            'nombre.max' => 'El cargo no puede exceder 20 caracteres.',
-            'descripcion.required' => 'La descripción es obligatoria.',
-            'descripcion.max' => 'La descripción no puede exceder 100 caracteres.',
+            'nombre-rol.required' => 'El nombre es obligatorio.',
+            'nombre-rol.unique' => 'El rol ya se encuentra registrado.',
+            'nombre-rol.regex' => 'El rol solo puede contener letras, números y espacios.',
+            'nombre-rol.max' => 'El rol no puede exceder 20 caracteres.',
+            'descripcion-rol.required' => 'La descripción es obligatoria.',
+            'descripcion-rol.max' => 'La descripción no puede exceder 100 caracteres.',
         ];
     }
 

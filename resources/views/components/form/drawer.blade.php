@@ -1,10 +1,16 @@
 @props([
     'modal',
+    'titulo_id' => 'titulo-modal',
+    'subtitle_id' => 'subtitle-modal',
+    'icon_id' => 'icono-modal',
     'title',
     'subtitle' => 'Complete la información requerida',
     'icon' => 'user',
     'formId' => null,
     'textoGuardar' => 'Guardar',
+    'spanGuardar' => 'span-guardar',
+    'iconoGuardar' => 'icono-guardar',
+    'btnCancelar' => 'btn-cancelar',
     'width' => 'md',
 ])
 
@@ -99,15 +105,15 @@ window.addEventListener('drawer-loaded', (e) => {
                 <div class="flex justify-between">
 
                     <div class="flex items-start gap-3">
-                        <div class="bg-green-100 rounded-lg p-2 flex-shrink-0">
+                        <div id="{{ $icon_id }}" class="bg-green-100 rounded-lg p-2 flex-shrink-0">
                             {{ $icon ?? '' }}
                         </div>
 
                         <div>
-                            <h2 id='titulo-modal' class="text-lg font-semibold">
+                            <h2 id="{{ $titulo_id }}" class="text-lg font-semibold">
                                 {{ $title }}
                             </h2>
-                            <p id='subtitle-modal' class="text-sm text-gray-500 -mt-6">
+                            <p id="{{ $subtitle_id }}" class="text-sm text-gray-500 -mt-6"> 
                                 {{ $subtitle }}
                             </p>
                         </div>
@@ -132,8 +138,8 @@ window.addEventListener('drawer-loaded', (e) => {
 
             <!-- Footer -->
             <div class="border-t pt-1 p-3 flex justify-center gap-2">
-                <x-form.button-cancel :modal="$modal" />
-                <x-form.button-save :texto="$textoGuardar" />
+                <x-form.button-cancel :modal="$modal" :btnCancelar="$btnCancelar" />
+                <x-form.button-save :texto="$textoGuardar" :spanGuardar="$spanGuardar" :iconoGuardar="$iconoGuardar" class="btn-guardar"/>
             </div>
         </form>
     </div>

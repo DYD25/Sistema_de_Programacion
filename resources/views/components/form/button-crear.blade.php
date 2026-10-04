@@ -9,6 +9,7 @@
                     w-10 h-10
                     bg-green-600 hover:bg-green-700
                     text-white rounded-full
+                    bg-gradient-to-r from-[#21783E] via-[#1F9A72] to-[#1FA6A6]
                     transition
                     shadow-md
                     group'

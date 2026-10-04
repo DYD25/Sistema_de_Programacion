@@ -3,41 +3,39 @@
 namespace App\Http\Controllers;
 
 use Throwable;
-use Exception;
 
 use Illuminate\Http\Request;
-use App\Http\Requests\MiembroRequest;
-use App\Services\MiembroService;
+use App\Http\Requests\PersonaRequest;
+use App\Services\PersonaService;
 // use Monolog\Formatter\LineFormatter;
 
-class MiembroController extends Controller
+class PersonaController extends Controller
 {
     public function __construct(
-        protected MiembroService $miembroService,
+        protected PersonaService $personaService,
     ) {}
 
     public function index()
     {
-        return view('miembro.index');
+        return view('persona.index');
     }
 
     public function data()
     {
         try {
             return response()->json(
-                $this->miembroService->obtenerDatos()
+                $this->personaService->obtenerDatos()
             );
-        } catch (Throwable $e) {
-
+        } catch (Throwable $t) {
             return response()->json([  'error' => true,'mensaje' => 'No fue posible obtener la información.' ], 500);
         }
     }
 
-    public function store(MiembroRequest $request)
+    public function store(PersonaRequest $request)  
     {
         try {
             $data = $request->all();
-            $response = $this->miembroService->procesarParaGuardar($data);
+            $response = $this->personaService->procesarParaGuardar($data);
             return response()->json($response);
 
         } catch (Throwable $t) {
@@ -45,11 +43,11 @@ class MiembroController extends Controller
         }
     }
 
-    public function actualizar(MiembroRequest $request)
+    public function actualizar(PersonaRequest $request)
     {
         try {
             $data = $request->all();
-            $response = $this->miembroService->procesarParaActualizar($data);
+            $response = $this->personaService->procesarParaActualizar($data);   
             return response()->json($response);
 
         } catch (Throwable $t) {
@@ -61,26 +59,26 @@ class MiembroController extends Controller
     {
         try {
             $data = $request->all();
-            $response = $this->miembroService->procesarParaEstado($data);
-
+            $response = $this->personaService->procesarParaEstado($data);
             return response()->json($response);
         } catch (Throwable $t) {
             return response()->json(['error' => true, 'mensaje' => 'No se pudo actualizar el estado.'], 500);
         }
     }
 
-    public function  eliminar(Request $request)
+    public function eliminar(Request $request)
     {
         try {
             $data = $request->all();
-            $response = $this->miembroService->procesarParaEliminar($data);
+            $response = $this->personaService->procesarParaEliminar($data);
             return response()->json($response);
         } catch (Throwable $t) {
+             dd(['error' => $t->getMessage(),
+                'Linea'=>$t->getLine(),
+                'Archivo'=>$t->getFile(),
+            ]);
             return response()->json(['error' => true, 'mensaje' => 'No se pudo eliminar la persona.'], 500);
         }
     }
 }
-//  dd(['error' => $t->getMessage(),
-//                 'Linea'=>$t->getLine(),
-//                 'Archivo'=>$t->getFile(),
-//             ]);
+

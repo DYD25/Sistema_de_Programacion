@@ -2,14 +2,14 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\UsuarioController;
-use App\Http\Controllers\RolController;
-use App\Http\Controllers\PermisoController;
 use App\Http\Controllers\IglesiaController;
-use App\Http\Controllers\DirectivaController;
+use App\Http\Controllers\AreaController;
 use App\Http\Controllers\CargoController;
 use App\Http\Controllers\DirectivoController;
-use App\Http\Controllers\MiembroController;
+use App\Http\Controllers\PersonaController;
+use App\Http\Controllers\AdministracionController;
+use App\Http\Controllers\RolController;
+use App\Http\Controllers\PermisoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,27 +36,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::post('/iglesia/seleccionar', [IglesiaController::class, 'seleccionar'])->name('iglesia.seleccionar');
 
-    Route::resource('usuarios', UsuarioController::class);
-    Route::post('/consultar-datos-tabla-usuario', [UsuarioController::class, 'data'])->name('data-usuario');
-    Route::post('/crear-usuario', [UsuarioController::class, 'store'])->name('crear-usuario');
-    Route::post('/actualizar-usuario', [UsuarioController::class, 'actualizar'])->name('actualizar-usuario');
-    Route::post('/estado-usuario', [UsuarioController::class, 'estado'])->name('estado-usuario');
-    Route::post('/eliminar-usuario', [UsuarioController::class, 'eliminar'])->name('eliminar-usuario');
-
-    Route::resource('roles', RolController::class);
-    Route::post('/consultar-datos-tabla-role', [RolController::class, 'data'])->name('data-role');
-    Route::post('/crear-role', [RolController::class, 'store'])->name('crear-role');
-    Route::post('/actualizar-role', [RolController::class, 'actualizar'])->name('actualizar-role');
-    Route::post('/estado-role', [RolController::class, 'estado'])->name('estado-role');
-    Route::post('/eliminar-role', [RolController::class, 'eliminar'])->name('eliminar-role');
-
-    Route::resource('permisos', PermisoController::class);
-    Route::post('/consultar-datos-tabla-periso', [PermisoController::class, 'data'])->name('data-periso');
-    Route::post('/crear-periso', [PermisoController::class, 'store'])->name('crear-periso');
-    Route::post('/actualizar-periso', [PermisoController::class, 'actualizar'])->name('actualizar-periso');
-    Route::post('/estado-periso', [PermisoController::class, 'estado'])->name('estado-periso');
-    Route::post('/eliminar-periso', [PermisoController::class, 'eliminar'])->name('eliminar-periso');
-
     Route::resource('iglesias', IglesiaController::class);
     Route::post('/consultar-datos-tabla-iglesia', [IglesiaController::class, 'data'])->name('data-iglesia');
     Route::post('/crear-iglesia', [IglesiaController::class, 'store'])->name('crear-iglesia');
@@ -64,19 +43,54 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/estado-iglesia', [IglesiaController::class, 'estado'])->name('estado-iglesia');
     Route::post('/eliminar-iglesia', [IglesiaController::class, 'eliminar'])->name('eliminar-iglesia');
    
-    Route::resource('directivas', DirectivaController::class);
-    Route::post('/consultar-datos-tabla-directiva', [DirectivaController::class, 'data'])->name('data-directiva');
-    Route::post('/crear-directiva', [DirectivaController::class, 'store'])->name('crear-directiva');
-    Route::post('/actualizar-directiva', [DirectivaController::class, 'actualizar'])->name('actualizar-directiva');
-    Route::post('/estado-directiva', [DirectivaController::class, 'estado'])->name('estado-directiva'); 
-    Route::post('/eliminar-directiva', [DirectivaController::class, 'eliminar'])->name('eliminar-directiva');
- 
+    Route::resource('areas', AreaController::class);
+    Route::post('/consultar-datos-tabla-area', [AreaController::class, 'data'])->name('data-area');
+    Route::post('/crear-area', [AreaController::class, 'store'])->name('crear-area');
+    Route::post('/actualizar-area', [AreaController::class, 'actualizar'])->name('actualizar-area');
+    Route::post('/estado-area', [AreaController::class, 'estado'])->name('estado-area'); 
+    Route::post('/eliminar-area', [AreaController::class, 'eliminar'])->name('eliminar-area');
+    Route::post('/consultar-areas', [AreaController::class, 'consultar'])->name('consultar-areas');
+    Route::post('/asignar-areas', [AreaController::class, 'asignar'])->name('asignar-areas');
+
+
+    Route::resource('personas-general', PersonaController::class);
+    Route::post('/consultar-datos-tabla-persona', [PersonaController::class, 'data'])->name('data-persona');
+    Route::post('/crear-persona', [PersonaController::class, 'store'])->name('crear-persona');
+    Route::post('/actualizar-persona', [PersonaController::class, 'actualizar'])->name('actualizar-persona');
+    Route::post('/estado-persona', [PersonaController::class, 'estado'])->name('estado-persona');
+    Route::post('/eliminar-persona', [PersonaController::class, 'eliminar'])->name('eliminar-persona');
+
+    Route::resource('personas', PersonaController::class);
+
+
+
     Route::resource('cargos', CargoController::class);
     Route::post('/consultar-datos-tabla-cargo', [CargoController::class, 'data'])->name('data-cargo');
     Route::post('/crear-cargo', [CargoController::class, 'store'])->name('crear-cargo');
     Route::post('/actualizar-cargo', [CargoController::class, 'actualizar'])->name('actualizar-cargo');
     Route::post('/estado-cargo', [CargoController::class, 'estado'])->name('estado-cargo');
     Route::post('/eliminar-cargo', [CargoController::class, 'eliminar'])->name('eliminar-cargo');
+
+    Route::resource('administracion', AdministracionController::class);
+    Route::post('/consultar-datos-tabla-usuario', [AdministracionController::class, 'data'])->name('data-usuario');
+    Route::post('/crear-usuario', [AdministracionController::class, 'store'])->name('crear-usuario');
+    Route::post('/actualizar-usuario', [AdministracionController::class, 'actualizar'])->name('actualizar-usuario');
+    Route::post('/estado-usuario', [AdministracionController::class, 'estado'])->name('estado-usuario');
+    Route::post('/eliminar-usuario', [AdministracionController::class, 'eliminar'])->name('eliminar-usuario');
+
+    Route::post('/consultar-datos-tabla-rol', [RolController::class, 'data'])->name('data-rol');
+    Route::post('/crear-rol', [RolController::class, 'store'])->name('crear-rol');
+    Route::post('/actualizar-rol', [RolController::class, 'actualizar'])->name('actualizar-rol');
+    Route::post('/estado-rol', [RolController::class, 'estado'])->name('estado-rol');
+    Route::post('/eliminar-rol', [RolController::class, 'eliminar'])->name('eliminar-rol');
+
+    Route::post('/consultar-datos-tabla-permiso', [PermisoController::class, 'data'])->name('data-permiso');
+    Route::post('/consultar-permisos', [PermisoController::class, 'consultar'])->name('consultar-permiso');
+    Route::post('/crear-permiso', [PermisoController::class, 'store'])->name('crear-permiso');
+    Route::post('/actualizar-permiso', [PermisoController::class, 'actualizar'])->name('actualizar-permiso');
+    Route::post('/estado-permiso', [PermisoController::class, 'estado'])->name('estado-permiso');
+    Route::post('/eliminar-permiso', [PermisoController::class, 'eliminar'])->name('eliminar-permiso');
+
 
    
 
@@ -89,12 +103,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/obtener-directivas', [DirectivoController::class, 'obtenerDirectivas'])->name('obtener-directivas');
     Route::post('/obtener-cargos', [DirectivoController::class, 'obtenerCargos'])->name('obtener-cargos');
     
-    Route::resource('miembros', MiembroController::class);
-    Route::post('/consultar-datos-tabla-miembro', [MiembroController::class, 'data'])->name('data-miembro');
-    Route::post('/crear-miembro', [MiembroController::class, 'store'])->name('crear-miembro');
-    Route::post('/actualizar-miembro', [MiembroController::class, 'actualizar'])->name('actualizar-miembro');
-    Route::post('/estado-miembro', [MiembroController::class, 'estado'])->name('estado-miembro');
-    Route::post('/eliminar-miembro', [MiembroController::class, 'eliminar'])->name('eliminar-miembro');
+   
   
 });
 

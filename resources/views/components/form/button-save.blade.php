@@ -1,6 +1,6 @@
-@props(['texto'])
+@props(['texto', 'iconoGuardar' => 'icono-guardar', 'spanGuardar' => 'span-guardar'])
 
-<button {{ $attributes->merge([
+<button  {{ $attributes->merge([
         'type' => 'submit',
         'class' => '
             group
@@ -25,9 +25,9 @@
     ]) }}>
 
     <div class="relative z-10 flex items-center justify-center gap-2">
-        <i id="icono-guardar" data-lucide="save-check" class="w-2 h-2"></i>
-        <span id="span-guardar" class="text-sm">
-            Guardar {{ $texto }}
+        <i id="{{$iconoGuardar}}" data-lucide="save-check" class="icono-guardar"></i>
+        <span id="{{$spanGuardar}}" class="text-sm">
+            {{ $texto }}
         </span>
 
     </div>

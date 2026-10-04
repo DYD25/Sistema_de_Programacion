@@ -7,7 +7,7 @@ use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class CargoRequest extends FormRequest
+class PermisoRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,25 +25,25 @@ class CargoRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'nombre' => [
+            'nombre-permiso' => [
                 'required',
-                Rule::unique('cargos', 'nombre')->ignore($this->id),
+                Rule::unique('permisos', 'nombre')->ignore($this->id),
                 'regex:/^[a-zA-Z0-9\s]+$/',
                 'max:20',
             ],
-            'descripcion' => 'required|max:100',
+            'descripcion-permiso' => 'required|max:100',
         ];
     }
 
     public function messages(): array
     {
         return [
-            'nombre.required' => 'El nombre es obligatorio.',
-            'nombre.unique' => 'El cargo ya se encuentra registrado.',
-            'nombre.regex' => 'El cargo solo puede contener letras, números y espacios.',
-            'nombre.max' => 'El cargo no puede exceder 20 caracteres.',
-            'descripcion.required' => 'La descripción es obligatoria.',
-            'descripcion.max' => 'La descripción no puede exceder 100 caracteres.',
+            'nombre-permiso.required' => 'El nombre es obligatorio.',
+            'nombre-permiso.unique' => 'El permiso ya se encuentra registrado.',
+            'nombre-permiso.regex' => 'El permiso solo puede contener letras, números y espacios.',
+            'nombre-permiso.max' => 'El permiso no puede exceder 20 caracteres.',
+            'descripcion-permiso.required' => 'La descripción es obligatoria.',
+            'descripcion-permiso.max' => 'La descripción no puede exceder 100 caracteres.', 
         ];
     }
 

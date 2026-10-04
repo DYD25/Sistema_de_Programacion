@@ -1,5 +1,5 @@
 <header id="header"
-    class="fixed top-0 right-0 left-52 h-16 bg-white shadow-sm flex items-center justify-between px-6 z-50 transition-all duration-300">
+    class="fixed top-0 right-0 left-15 h-16 bg-white shadow-sm flex items-center justify-between px-6 z-50 transition-all duration-300">
 
     <div class="flex items-center gap-5">
 
@@ -30,4 +30,7 @@
         </div>
     </div>
 
+    
+
+            
 </header>

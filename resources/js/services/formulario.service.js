@@ -2,8 +2,8 @@ export default class FormularioService {
 
     obtenerDatos(formularioId) {
 
-        const formulario = document.getElementById(formularioId);
-        const datos = {};
+        let formulario = document.getElementById(formularioId);
+        let datos = {};
 
         formulario.querySelectorAll('[name]').forEach(campo => {
 
@@ -22,29 +22,40 @@ export default class FormularioService {
 
     onSubmit(idFormulario, callback) {
 
-        const formulario = document.getElementById(idFormulario);
-        if (!formulario) return;
+        let formulario = document.getElementById(idFormulario);
 
-        formulario.addEventListener('submit', (event) => {
+        if (!formulario) return;
+        if (formulario._submitCallback) {
+            formulario.removeEventListener(  'submit',  formulario._submitCallback);
+        }
+
+        formulario._submitCallback = (event) => {
             event.preventDefault();
+
             callback(event);
-        });
+        };
+
+        formulario.addEventListener(
+            'submit',
+            formulario._submitCallback
+        );
     }
 
     onClick(idElemento, callback) {
-        const elemento = document.getElementById(idElemento);
+        let elemento = document.getElementById(idElemento);
         if (!elemento) return;
         elemento.addEventListener('click', callback);
     }
 
+
     llenar(idFormulario, datos) {
 
-        const formulario = document.getElementById(idFormulario);
+        let formulario = document.getElementById(idFormulario);
 
         if (!formulario) return;
 
         Object.keys(datos).forEach(campo => {
-            const input = formulario.querySelector(`[name="${campo}"]`);
+            let input = formulario.querySelector(`[name="${campo}"]`);
 
             if (input) {
                 input.value = datos[campo];
@@ -53,7 +64,7 @@ export default class FormularioService {
     }
 
     limpiar(idFormulario) {
-        const formulario = document.getElementById(idFormulario);
+        let formulario = document.getElementById(idFormulario);
 
         if (formulario) {
             formulario.reset();
@@ -63,7 +74,7 @@ export default class FormularioService {
     mostrarErroresCampos(errores) {
         Object.keys(errores).forEach(campo => {
 
-            const elemento = document.getElementById(`error-${campo}`);
+            let elemento = document.getElementById(`error-${campo}`);
 
             if (elemento) {
                 elemento.innerText = errores[campo][0];
@@ -73,7 +84,7 @@ export default class FormularioService {
 
     inicializarEventosErrores(idFormulario) {
 
-        const formulario = document.getElementById(idFormulario);
+        let formulario = document.getElementById(idFormulario);
 
         if (!formulario) return;
 
@@ -81,7 +92,7 @@ export default class FormularioService {
 
             campo.addEventListener('input', () => {
 
-                const error = formulario.querySelector(`#error-${campo.name}`);
+                let error = formulario.querySelector(`#error-${campo.name}`);
 
                 if (error) {
                     error.innerText = '';
@@ -95,7 +106,7 @@ export default class FormularioService {
 
     limpiarErroresCampos(idFormulario) {
 
-        const formulario = document.getElementById(idFormulario);
+        let formulario = document.getElementById(idFormulario);
 
         if (!formulario) return;
 

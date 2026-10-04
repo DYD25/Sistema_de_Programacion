@@ -1,7 +1,7 @@
 import Services from '../services';
 import { createIcons, icons } from 'lucide';
 
-class Miembro {
+class Persona {
     constructor() {
         this.enviarDatos = [];
     }
@@ -28,40 +28,17 @@ class Miembro {
         return respuesta;
     }
 
-    // procesarRespuestaError(datos, mensaje_error) {
-
-    //     if (!datos) {
-    //         Services.alerta.error(mensaje_error);
-    //         return false;
-    //     }
-
-    //     if (datos.validacion) {
-    //         Services.formulario.mostrarErroresCampos(datos.errores);
-    //         Services.notificacion.info(datos.mensaje);
-    //         return false;
-    //     }
-
-    //     if (datos.excepcion) {
-    //         Services.notificacion.warning(datos.mensaje);
-    //         return false;
-    //     }
-
-    //     if (datos.error) {
-    //         Services.notificacion.error(datos.mensaje);
-    //         return false;
-    //     }
-    //     return true;
-    // }
-
     inicializarEventos() {
         Services.formulario.onSubmit('form-crear-persona', () => this.guardarPersona());
-        Services.formulario.onClick('btn-crear-persona', () => this.personaModal('nuevo'));
+        Services.formulario.onClick('btn-crear', () => this.personaModal('nuevo'));
         Services.formulario.onClick('btn-cancelar', () => Services.drawer.cerrar('crear-persona'));
+        Services.formulario.onSubmit('form-asignar-areas', () => this.guardarAsignarAreas());
     }
 
     async consultarDatosTable() {
-        let respuesta = await this.consultaGeneral('cunsulta los datos', 'consultar-datos-tabla-miembro', { loader: 'progress' });
+        let respuesta = await this.consultaGeneral('cunsulta los datos', 'consultar-datos-tabla-persona', { loader: 'progress' });
         if (!respuesta) return;
+
         this.cargarTabla(respuesta.data);
         this.actualizarGraficas(respuesta.estadisticas);
         this.actualizarCards(respuesta.estadisticas);
@@ -104,7 +81,6 @@ class Miembro {
     }
 
     actualizarCards(datos) {
-
         Services.card.actualizar({
 
             'card-total': datos.total,
@@ -130,20 +106,14 @@ class Miembro {
 
     cargarTabla(datos) {
         Services.tabla.crear({
-            id: '#table_persona',
+            id: '#table_personas',
             data: datos,
             columns: [
                 {
-                    data: 'nombre',
+                    data: 'nombre_completo',
                     render: function (data) {
 
-                        const iniciales = data
-                            .trim()
-                            .split(/\s+/)
-                            .slice(0, 2)
-                            .map(nombre => nombre.charAt(0).toUpperCase())
-                            .join('');
-
+                        let iniciales = Services.utilidades.inicialesNombre(data);
                         return `
                             <div class="flex items-center gap-3">
                                 <div class="avatar-iniciales">
@@ -154,8 +124,22 @@ class Miembro {
                         `;
                     }
                 },
-                { data: 'nombre_whatsapp' },
                 { data: 'telefono' },
+                { data: 'fecha_nacimiento' },
+                {
+                    data: 'areas',
+                    className: 'text-center',
+                    render: function (data, type, row) {
+
+                        let nombres = data.map(area => area.nombre).join(', ') || 'Sin asignar';
+
+                        return `
+                            <span data-tooltip="${nombres}" class="cursor-pointer">
+                                ${row.areas_count}
+                            </span>
+                        `;
+                    }
+                },
                 {
                     data: 'estado',
                     className: 'text-center',
@@ -167,7 +151,19 @@ class Miembro {
                 },
                 {
                     data: null, className: 'text-center',
-                    render: (data) => Services.accion.botones(data)
+                    render: (data) => Services.accion.botones(data, {
+                        extra: (datos) => {
+                            return `
+                            <button
+                                type="button"
+                                class="btn-asignar-areas p-0-4 rounded-lg transition-colors transition-transform duration-150 active:scale-90"
+                                data-id="${datos.id}"
+                                data-tooltip="Asignar Areas/Ministerios">
+                                <i data-lucide="user-key" class="w-4 h-4"></i>
+                            </button>
+                        `;
+                        }
+                    })
                 }
             ],
 
@@ -176,39 +172,61 @@ class Miembro {
 
         this.btnEditar();
         this.btnEstado();
+        this.btnAsignarAreas();
         this.btnEliminar();
     }
 
     btnEditar() {
-        Services.tabla.evento('#table_persona', '.btn-editar', (persona) => {
+        Services.tabla.evento('#table_personas', '.btn-editar', (persona) => {
             this.personaModal('editar');
-            document.getElementById('nombre').value = persona.nombre;
-            document.getElementById('nombre_whatsapp').value = persona.nombre_whatsapp;
+            document.getElementById('nombres').value = persona.nombres;
+            document.getElementById('apellidos').value = persona.apellidos;
             document.getElementById('telefono').value = persona.telefono;
+            document.getElementById('fecha_nacimiento').value = persona.fecha_nacimiento;
             this.personaId = persona.id;
         });
     }
 
     btnEstado() {
-        Services.tabla.evento('#table_persona', '.btn-estado', async (datos) => {
+        Services.tabla.evento('#table_personas', '.btn-estado', async (datos) => {
             this.enviarDatos = {
                 id: datos.id,
                 estado: datos.estado
             };
-
-            let respuesta = await this.consultaGeneral('actualizar el estado la persona', 'estado-miembro', { loader: 'progress' });
-            if (!respuesta) return;
-            Services.notificacion.success(respuesta.mensaje);
-            this.consultarDatosTable();
+            this.ejecutarBotones('actualizar el estado la persona', 'estado-persona');
         });
     }
 
-    btnEliminar() {
-        Services.tabla.evento('#table_persona', '.btn-eliminar', (datos) => {
+    btnAsignarAreas() {
+        Services.tabla.evento('#table_personas', '.btn-asignar-areas', async (datos) => {
+            Services.drawer.loading('asignar-areas');
+            let respuesta = await this.consultarAreas();
+            Services.drawer.loaded('asignar-areas');
+            if (!respuesta) return;
+            
+            document.getElementById('contenedor-areas').innerHTML = Services.checkboxMultiple.crear(respuesta, datos.areas.map(area => area.id));
+            window.dispatchEvent(new CustomEvent('open-modal', { detail: 'asignar-areas' }));
 
+            this.personaId = datos.id;
+            Services.formulario.onClick('btn-cancelar-areas', () => this.cerrarModal());
+        });
+    }
+
+    async consultarAreas() {
+        if (this.areasConsultadas) return this.areasConsultadas;
+
+        let respuesta = await this.consultaGeneral('consultar las areas', 'consultar-areas');
+        if (!respuesta) return;
+
+        this.areasConsultadas = respuesta.data;
+        return respuesta.data;
+    }
+
+    btnEliminar() {
+        Services.tabla.evento('#table_personas', '.btn-eliminar', (datos) => {
             Services.swal.fire({
                 title: `Eliminar Registro`,
-                html: `¿Está seguro de eliminar el registro de <b>${datos.nombre}?</b> </br> Esta acción no se puede deshacer.`,
+                html: `¿Está seguro de eliminar el registro de <b>${datos.nombres}?</b> </br> Esta acción no se puede deshacer.`,
                 icon: 'question',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
@@ -217,18 +235,24 @@ class Miembro {
                 cancelButtonText: 'Cancelar'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    this.eliminar(datos.id);
+                    this.enviarDatos = { id: datos.id, };
+                    this.ejecutarBotones('eliminar el registro la persona', 'eliminar-persona');
                 }
             });
-        }
-        );
+        });
     }
 
-    async eliminar(id) {
-        this.enviarDatos = { id: id, };
-
-        let respuesta = await this.consultaGeneral('eliminar el registro la persona', 'eliminar-miembro', { loader: 'progress' });
+    async ejecutarBotones(mensajeError, ruta) {
+        
+        let respuesta = ruta !== 'asignar-areas' ? await this.consultaGeneral(mensajeError, ruta, { loader: 'progress' }) 
+        : await this.consultaGeneral(mensajeError, ruta, { loader: { type: 'drawer', id: 'asignar-areas' } });
+        
         if (!respuesta) return;
+
+        if(ruta === 'asignar-areas'){
+            window.dispatchEvent(new CustomEvent('close-modal', { detail: 'asignar-areas' }));
+        }
+        
         Services.notificacion.success(respuesta.mensaje);
         this.consultarDatosTable();
     }
@@ -262,14 +286,14 @@ class Miembro {
     async guardarPersona() {
         Services.formulario.limpiarErroresCampos('form-crear-persona');
         this.enviarDatos = Services.formulario.obtenerDatos('form-crear-persona');
-        
+
         let ruta = 'crear';
         if (this.personaId) {
             this.enviarDatos.id = this.personaId;
             ruta = 'actualizar'
         }
 
-        let respuesta = await this.consultaGeneral(ruta + ' la persona', ruta+'-miembro', { loader: { type: 'drawer', id: 'crear-persona' } });
+        let respuesta = await this.consultaGeneral(ruta + ' la persona', ruta + '-persona', { loader: { type: 'drawer', id: 'crear-persona' } });
         if (!respuesta) return;
 
         Services.drawer.cerrar('crear-persona');
@@ -277,7 +301,23 @@ class Miembro {
         this.consultarDatosTable();
     }
 
+    async guardarAsignarAreas() {
+        
+        let seleccionados = Services.checkboxMultiple.obtenerSeleccionados('datos[]');
+
+        this.enviarDatos = {
+            id_persona: this.personaId,
+            areas: seleccionados
+        };
+
+        this.ejecutarBotones('asignar las areas', 'asignar-areas');
+    }
+
+    cerrarModal() {
+        window.dispatchEvent(new CustomEvent('close-modal', { detail: 'asignar-areas' }));
+    }
+
 }
 
-const miembro = new Miembro();
-miembro.cargarMetodos();
+const persona = new Persona();
+persona.cargarMetodos();

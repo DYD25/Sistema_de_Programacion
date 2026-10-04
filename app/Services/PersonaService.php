@@ -2,15 +2,14 @@
 
 namespace App\Services;
 
-use Exception;
-use App\Repositories\MiembroRepository;
+use App\Repositories\PersonaRepository;
 use App\Services\ContextoService;
 
-class MiembroService
+class PersonaService
 {
 
     public function __construct(
-        protected MiembroRepository $miembroRepository, protected ContextoService $contextoService)
+        protected PersonaRepository $personaRepository, protected ContextoService $contextoService)
     { }
 
     public function obtenerDatos(): array
@@ -20,11 +19,11 @@ class MiembroService
             return [];
         }
      
-        $miembros = $this->miembroRepository->listar($id_iglesia);
+        $personas = $this->personaRepository->listar($id_iglesia);
 
-        $total = $miembros->count();
-        $activos = $miembros->where('estado', 1)->count();
-        $inactivos = $miembros->where('estado', 0)->count();
+        $total = $personas->count();
+        $activos = $personas->where('estado', 1)->count();
+        $inactivos = $personas->where('estado', 0)->count();
 
         return [
             'estadisticas' => [
@@ -47,18 +46,14 @@ class MiembroService
 
         ],
 
-            'data' => $miembros
+            'data' => $personas
         ];
     }
 
     public function procesarParaGuardar(array $data)
     {
         $id_iglesia = $this->contextoService->obtenerIglesiaId();
-        $respusta =  $this->obtenerMiembroExistente($data['nombre'], $data['telefono'], $id_iglesia);
-
-        if($respusta) return $respusta;
-
-        $this->miembroRepository->guardarMiembros($data, $id_iglesia);
+        $this->personaRepository->guardarPersonas($data, $id_iglesia);
 
         return [
             'mensaje' => 'Persona registrado correctamente.'
@@ -68,11 +63,7 @@ class MiembroService
     public function procesarParaActualizar(array $data)
     {
         $id_iglesia = $this->contextoService->obtenerIglesiaId();
-        $respusta =  $this->obtenerMiembroExistente($data['nombre'], $data['telefono'], $id_iglesia, $data['id']);
-
-        if($respusta) return $respusta;
-        
-        $this->miembroRepository->actualizarMiembros($data, $id_iglesia);
+        $this->personaRepository->actualizarPersona($data, $id_iglesia);
 
         return [
             'mensaje' => 'Persona actualizado correctamente.'
@@ -82,7 +73,7 @@ class MiembroService
     public function procesarParaEstado(array $data)
     {
         $id_iglesia = $this->contextoService->obtenerIglesiaId();   
-        $this->miembroRepository->actualizarEstadoMiembros($data, $id_iglesia);
+        $this->personaRepository->actualizarEstadoPersona($data, $id_iglesia);
 
         return [
             'mensaje' => 'Estado actualizado correctamente.'    
@@ -92,22 +83,22 @@ class MiembroService
     public function procesarParaEliminar(array $data)
     {
         $id_iglesia = $this->contextoService->obtenerIglesiaId();
-        $this->miembroRepository->eliminarMiembros($data['id'], $id_iglesia);
+        $this->personaRepository->eliminarPersona($data['id'], $id_iglesia);
 
         return [
             'mensaje' => 'Persona eliminado correctamente.' 
         ];
     }
 
-    public function obtenerMiembroExistente(string $nombre, string $telefono,int $id_iglesia,int $id=null)
-    {
-        if($this->miembroRepository->existeMiembro($nombre, $telefono,$id_iglesia,$id))      
-        {
-            return [
-                'excepcion' => true,
-                'mensaje' => "La persona '{$nombre}' ya se encuentra registrada.",
-                'status' => 400,
-            ]; 
-        }
-    }
+    // public function obtenerMiembroExistente(string $nombre, string $telefono,int $id_iglesia,int $id=null)
+    // {
+    //     if($this->miembroRepository->existeMiembro($nombre, $telefono,$id_iglesia,$id))      
+    //     {
+    //         return [
+    //             'excepcion' => true,
+    //             'mensaje' => "La persona '{$nombre}' ya se encuentra registrada.",
+    //             'status' => 400,
+    //         ]; 
+    //     }
+    // }
 }

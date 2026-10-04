@@ -1,8 +1,9 @@
 @props(['iglesias', 'iglesiaSeleccionada'])
 
-<div class="select-iglesia p-2 border-b border-green-800">
+<div class="select-iglesia p-2 border-b border-green-500">
 
-    <select id="selectIglesia" class="select w-full rounded-md bg-green-800 border-green-700 text-white text-sm">
+    <select id="selectIglesia" class="select w-full rounded-md  bg-gradient-to-r from-[#21783E] via-[#1F9A72] to-[#1FA6A6] text-white text-sm">
+
 
         <option value="">
             Seleccione una iglesia

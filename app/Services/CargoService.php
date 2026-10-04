@@ -10,20 +10,23 @@ class CargoService
 {
 
     public function __construct(
-        protected CargoRepository $cargoRepository)
+        protected CargoRepository $cargoRepository,
+        protected ContextoService $contextoService)
     { }
 
     public function obtenerDatos(): array
     {    
-        $directivas = $this->cargoRepository->listar();
+        $id_iglesia = $this->contextoService->obtenerIglesiaId();
+        $cargos = $this->cargoRepository->listar($id_iglesia);
         return [
-            'data' => $directivas
+            'data' => $cargos
         ];
     }
 
     public function procesarParaGuardar(array $data)
     {
-       $this->cargoRepository->registrarCargo($data);
+        $id_iglesia = $this->contextoService->obtenerIglesiaId();
+        $this->cargoRepository->registrarCargo($data, $id_iglesia);
         return [
             'mensaje' => 'Cargo registrado correctamente.'
         ];
@@ -31,14 +34,24 @@ class CargoService
 
     public function procesarParaActualizar(array $data)
     {
-        $this->cargoRepository->actualizarCargo($data);
+        if(empty($data['id_iglesia'])){
+            return [
+                'excepcion' => true,
+                'mensaje' => 'Este cargo no se puede actualizar.',
+            ];
+        }
+
+        $id_iglesia = $this->contextoService->obtenerIglesiaId();
+        $this->cargoRepository->actualizarCargo($data, $id_iglesia);
+
         return [
-            'mensaje' => 'Cargo actualizado correctamente.'
+            'mensaje' => 'Cargo actualizado correctamente.',
         ];
     }
 
     public function procesarParaEstado(array $data)
     {
+       
         $this->cargoRepository->actualizarEstadoCargo($data);
         return [
             'mensaje' => 'Estado actualizado correctamente.'    
@@ -47,7 +60,15 @@ class CargoService
 
     public function procesarParaEliminar(array $data)
     {
-        $this->cargoRepository->eliminarCargo($data['id']);
+        if(empty($data['id_iglesia'])){
+            return [
+                'excepcion' => true,
+                'mensaje' => 'Este cargo no se puede eliminar.',
+            ];
+        }
+
+        $id_iglesia = $this->contextoService->obtenerIglesiaId();
+        $this->cargoRepository->eliminarCargo($data['id'], $id_iglesia);
         return [
             'mensaje' => 'Cargo eliminado correctamente.' 
         ];

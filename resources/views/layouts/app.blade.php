@@ -27,7 +27,7 @@
 
     @include('layouts.menu_izquierdo')
 
-    <div id="layout" class="ml-52 min-h-screen transition-all duration-300">
+    <div id="layout" class="ml-60 min-h-screen transition-all duration-300">
 
         @include('layouts.cabecera')
 

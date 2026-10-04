@@ -12,8 +12,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Directivo extends Model
 {
-    use HasFactory;
     use HasUlids;
+    use HasFactory;
     
     public $incrementing = false;
 

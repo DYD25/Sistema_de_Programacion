@@ -48,14 +48,7 @@ class Cargo {
                 {
                     data: 'nombre',
                     render: function (data) {
-
-                        const iniciales = data
-                            .trim()
-                            .split(/\s+/)
-                            .slice(0, 2)
-                            .map(nombre => nombre.charAt(0).toUpperCase())
-                            .join('');
-
+                        let iniciales = Services.utilidades.inicialesNombre(data);
                         return `
                             <div class="flex items-center gap-3">
                                 <div class="avatar-iniciales">
@@ -102,6 +95,8 @@ class Cargo {
             document.getElementById('nombre').value = cargo.nombre;
             document.getElementById('descripcion').value = cargo.descripcion;
             this.cargoId = cargo.id;
+            this.idIglesia=cargo.iglesia_id;
+
         });
     }
 
@@ -112,11 +107,7 @@ class Cargo {
                 estado: cargo.estado,
             };
 
-            let respuesta = await this.consultaGeneral('actualizar el estado', 'estado-cargo', { loader: 'progress' });
-            if (!respuesta) return;
-
-            Services.notificacion.success(respuesta.mensaje);
-            this.consultarDatosTable();
+            this.ejecutarBotones('actualizar el estado', 'estado-cargo');
         });
     }
 
@@ -133,16 +124,15 @@ class Cargo {
                 cancelButtonText: 'Cancelar'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    this.eliminar(cargo.id);
+                    this.enviarDatos = { id: cargo.id, id_iglesia: cargo.iglesia_id };
+                    this.ejecutarBotones('eliminar el cargo', 'eliminar-cargo');
                 }
             });
         });
     }
 
-    async eliminar(id) {
-        this.enviarDatos = { id: id, };
-        
-        let respuesta = await this.consultaGeneral('eliminar el cargo', 'eliminar-cargo', { loader: 'progress' });
+    async ejecutarBotones(mensajeError, ruta) {
+        let respuesta = await this.consultaGeneral(mensajeError, ruta, { loader: 'progress' });
         if (!respuesta) return;
 
         Services.notificacion.success(respuesta.mensaje);
@@ -178,10 +168,12 @@ class Cargo {
     async guardarCargo() {
         Services.formulario.limpiarErroresCampos('form-crear-cargo');
         this.enviarDatos = Services.formulario.obtenerDatos('form-crear-cargo');
+        console.log(this.enviarDatos);
         
         let ruta = 'crear';
         if (this.cargoId) {
             this.enviarDatos.id = this.cargoId;
+            this.enviarDatos.id_iglesia = this.idIglesia;
             ruta = 'actualizar'
         }
 

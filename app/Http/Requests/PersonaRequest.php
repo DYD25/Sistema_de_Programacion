@@ -5,8 +5,9 @@ namespace App\Http\Requests;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
-class MiembroRequest extends FormRequest
+class PersonaRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,14 +25,27 @@ class MiembroRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'nombre' => [
+            'nombres' => [
                 'required',
-                'string',
                 'max:20',
                 'regex:/^[\pL\s]+$/u',
             ],
-            'nombre_whatsapp' => 'required|max:50',
-            'telefono' => 'required|digits:10',
+            'apellidos' => [
+                'required',
+                'max:20',
+                'regex:/^[\pL\s]+$/u',
+            ],
+            'telefono' => [
+                'required',
+                'digits:10',
+                Rule::unique('personas', 'telefono')->ignore($this->id),
+            ],
+            'fecha_nacimiento' => [
+                'date_format:Y-m-d',
+                'nullable',
+            ],
+
+
 
         ];
     }
@@ -46,6 +60,8 @@ class MiembroRequest extends FormRequest
             'nombre_whatsapp.max' => 'El nombre de Whatsapp no puede exceder 50 caracteres.',
             'telefono.required' => 'El número de teléfono es obligatorio.',
             'telefono.digits' => 'El número de teléfono debe tener exactamente 10 dígitos.',
+            'telefono.unique' => 'El número de teléfono ya está registrado.',
+            'fecha_nacimiento.date_format' => 'La fecha de nacimiento debe ser válida.',
         ];
     }
 

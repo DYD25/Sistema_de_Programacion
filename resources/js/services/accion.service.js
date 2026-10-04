@@ -1,11 +1,7 @@
 export default class AccionService {
 
     constructor() {
-        this.estilos = {
-            editar: 'p-0-4 rounded-lg transition-colors',
-            estado: 'p-0-4 rounded-lg transition-colors',
-            eliminar: 'p-0-4 rounded-lg transition-colors'
-        };
+        this.estilos = 'p-0-4 rounded-lg transition-colors transition-transform duration-150 active:scale-90';
     }
 
     botones(datos, opciones = {}) {
@@ -20,12 +16,13 @@ export default class AccionService {
             html += this.botonEditar(datos.id);
         }
 
-        if (opciones.eliminar ?? true) {
-            html += this.botonEliminar(datos.id);
+        if (typeof opciones.extra === 'function') {
+            //agregar this.estilos al boton extra
+            html += opciones.extra(datos);
         }
 
-        if (typeof opciones.extra === 'function') {
-            html += opciones.extra(datos);
+        if (opciones.eliminar ?? true) {
+            html += this.botonEliminar(datos.id);
         }
 
         html += `</div>`;
@@ -36,7 +33,7 @@ export default class AccionService {
 
         return `
             <button
-                class="btn-editar ${this.estilos.editar}"
+                class="btn-editar ${this.estilos}"
                 data-id="${id}"
                 data-tooltip="Editar">
               <i data-lucide="square-pen"></i> 
@@ -47,7 +44,7 @@ export default class AccionService {
     botonEstado(id, estado) {
         return `
             <button
-                class="btn-estado ${this.estilos.estado} ${estado ? 'estado_inactivo' : 'estado_activo'}"
+                class="btn-estado ${this.estilos} ${estado ? 'estado_inactivo' : 'estado_activo'}"
                 data-id="${id}"
                 data-estado="${estado}"
                 data-tooltip="${estado ? 'Desactivar' : 'Activar'}">
@@ -57,10 +54,9 @@ export default class AccionService {
     }
 
     botonEliminar(id) {
-
         return `
             <button
-                class="btn-eliminar ${this.estilos.eliminar}"
+                class="btn-eliminar ${this.estilos}"
                 data-id="${id}"
                 data-tooltip="Eliminar">               
                 <i data-lucide="trash-2"></i> 
