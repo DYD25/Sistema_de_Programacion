@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\IglesiaController;
 use App\Http\Controllers\AreaController;
 use App\Http\Controllers\CargoController;
-use App\Http\Controllers\DirectivoController;
+use App\Http\Controllers\DirectivaController;
 use App\Http\Controllers\PersonaController;
 use App\Http\Controllers\AdministracionController;
 use App\Http\Controllers\RolController;
@@ -52,15 +52,21 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/consultar-areas', [AreaController::class, 'consultar'])->name('consultar-areas');
     Route::post('/asignar-areas', [AreaController::class, 'asignar'])->name('asignar-areas');
 
-
     Route::resource('personas-general', PersonaController::class);
+    Route::resource('personas-vista', PersonaController::class);
     Route::post('/consultar-datos-tabla-persona', [PersonaController::class, 'data'])->name('data-persona');
     Route::post('/crear-persona', [PersonaController::class, 'store'])->name('crear-persona');
     Route::post('/actualizar-persona', [PersonaController::class, 'actualizar'])->name('actualizar-persona');
     Route::post('/estado-persona', [PersonaController::class, 'estado'])->name('estado-persona');
     Route::post('/eliminar-persona', [PersonaController::class, 'eliminar'])->name('eliminar-persona');
+    Route::post('/obtener-personas', [PersonaController::class, 'obtenerPersonas'])->name('consultar-personas');
 
-    Route::resource('personas', PersonaController::class);
+    Route::resource('directivas', DirectivaController::class);
+    Route::post('/consultar-datos-tabla-directiva', [DirectivaController::class, 'data'])->name('data-directiva');
+    Route::post('/crear-directiva', [DirectivaController::class, 'store'])->name('crear-directiva');
+    Route::post('/actualizar-directiva', [DirectivaController::class, 'actualizar'])->name('actualizar-directiva');         
+    Route::post('/estado-directiva', [DirectivaController::class, 'estado'])->name('estado-directiva');
+    Route::post('/eliminar-directiva', [DirectivaController::class, 'eliminar'])->name('eliminar-directiva');
 
 
 
@@ -70,6 +76,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/actualizar-cargo', [CargoController::class, 'actualizar'])->name('actualizar-cargo');
     Route::post('/estado-cargo', [CargoController::class, 'estado'])->name('estado-cargo');
     Route::post('/eliminar-cargo', [CargoController::class, 'eliminar'])->name('eliminar-cargo');
+    Route::post('/obtener-cargos', [CargoController::class, 'obtenerCargos'])->name('consultar-cargos');
+
+
+
+
 
     Route::resource('administracion', AdministracionController::class);
     Route::post('/consultar-datos-tabla-usuario', [AdministracionController::class, 'data'])->name('data-usuario');
@@ -94,14 +105,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
    
 
-    Route::resource('directivos', DirectivoController::class);
-    Route::post('/consultar-datos-tabla-directivo', [DirectivoController::class, 'data'])->name('data-directivo');
-    Route::post('/crear-directivo', [DirectivoController::class, 'store'])->name('crear-directivo');
-    Route::post('/actualizar-directivo', [DirectivoController::class, 'actualizar'])->name('actualizar-directivo');
-    Route::post('/estado-directivo', [DirectivoController::class, 'estado'])->name('estado-directivo');
-    Route::post('/eliminar-directivo', [DirectivoController::class, 'eliminar'])->name('eliminar-directivo');
-    Route::post('/obtener-directivas', [DirectivoController::class, 'obtenerDirectivas'])->name('obtener-directivas');
-    Route::post('/obtener-cargos', [DirectivoController::class, 'obtenerCargos'])->name('obtener-cargos');
+    // Route::resource('directivos', DirectivoController::class);
+    // Route::post('/consultar-datos-tabla-directivo', [DirectivoController::class, 'data'])->name('data-directivo');
+    // Route::post('/crear-directivo', [DirectivoController::class, 'store'])->name('crear-directivo');
+    // Route::post('/actualizar-directivo', [DirectivoController::class, 'actualizar'])->name('actualizar-directivo');
+    // Route::post('/estado-directivo', [DirectivoController::class, 'estado'])->name('estado-directivo');
+    // Route::post('/eliminar-directivo', [DirectivoController::class, 'eliminar'])->name('eliminar-directivo');
+    // Route::post('/obtener-directivas', [DirectivoController::class, 'obtenerDirectivas'])->name('obtener-directivas');
+    // Route::post('/obtener-cargos', [DirectivoController::class, 'obtenerCargos'])->name('obtener-cargos');
     
    
   

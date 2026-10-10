@@ -3,6 +3,8 @@
 namespace App\Repositories;
 
 use App\Models\Persona;
+use App\Models\PersonaArea;
+use Illuminate\Support\Facades\DB;
 
 class PersonaRepository
 {
@@ -53,23 +55,27 @@ class PersonaRepository
             ]);
     }
     
-    public function eliminarPersona(string $id, string $id_iglesia): void
+    public function eliminarPersona(string $id, string $id_iglesia, string $id_area): void
     {
+        if(strlen($id_area) > 0)
+        {
+            $areas = explode(',', $id_area);
+            PersonaArea::where('persona_id', $id)->whereIn('area_id', $areas)->delete();
+        }
+      
         Persona::where('id', $id)->where('iglesia_id', $id_iglesia)->delete();
     }
 
-    // public function existeMiembro(string $nombre, string $telefono,int $id_iglesia,int $id=null)
-    // {
-    //     $query = Miembro::where('iglesia_id', $id_iglesia)
-    //         ->where('nombre', $nombre)
-    //         ->where('telefono', $telefono);
+    public function listarPersonas(string $id_iglesia)
+    {
+        return Persona::select(
+            'id',
+            DB::raw('concat_ws(" ", nombres, apellidos) as nombre'), 
+        ) ->where('iglesia_id', $id_iglesia)
+        ->where('estado', 1)
+        ->get()->toArray();
+    }
 
-    //         if($id) 
-    //         {
-    //             $query->where('id', '!=', $id);
-    //         }
-    //         return $query->exists();
-    // }
 
 
 }

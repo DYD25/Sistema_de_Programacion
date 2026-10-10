@@ -11,20 +11,19 @@
 
     <div id="panel-body">
          
-        <x-crud.panel modal="crear-area">
-
+        <x-crud.panel>
             <x-slot:icon>
                 <x-heroicon-o-user-group class="w-6 h-6 text-green-600" />
             </x-slot:icon>
 
             @php
-            $columnas = [
-                ['contenido' => 'Nombre'],
-                ['contenido' => 'Descripción'],
-                ['contenido' => 'Usar Grupos'],
-                ['contenido' => 'Fecha de Creación'],   
-                ['contenido' => 'Estado'],
-                ['contenido' => 'Acciones'],
+                $columnas = [
+                    ['contenido' => 'Nombre'],
+                    ['contenido' => 'Descripción'],
+                    ['contenido' => 'Usar Grupos'],
+                    ['contenido' => 'Fecha de Creación'],   
+                    ['contenido' => 'Estado'],
+                    ['contenido' => 'Acciones'],
                 ];
             @endphp
 
@@ -34,8 +33,7 @@
 
         </x-crud.panel>
 
-        <x-form.drawer modal="crear-area" title="Crear Area" subtitle="Complete la información" width="sm"
-            formId="form-crear-area" textoGuardar="Area">
+        <x-form.drawer drawerId="crear-area" title="Crear Area" formId="form-crear-area" textoGuardar="Area">
 
             <x-slot:icon>
                 <x-heroicon-o-user class="w-7 h-7 text-green-600" />

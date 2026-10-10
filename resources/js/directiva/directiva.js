@@ -3,7 +3,7 @@ import { createIcons, icons } from 'lucide';
 import PasswordService from '../auth/password.service';
 
 
-class Directivo {
+class Directiva {
     constructor() {
         this.enviarDatos = [];
     }
@@ -12,43 +12,27 @@ class Directivo {
         if (!Services.iglesia.validarContexto()) return;
         Services.iglesia.inicializar();
         this.consultarCargos();
-        this.consultarDirectivos();
+        this.consultarPersonas();
         this.inicializarEventos();
         this.consultarDatosTable();
-
     }
 
-    async consultaGeneral(error, ruta, { loader = false } = {}) {
-        const mensajeError = `No se pudo completar la solicitud para ${error}`;
-        const respuesta = await Services.peticion.request(ruta, {
-            data: this.enviarDatos,
-            loader
-        });
-
-        if (!Services.respuesta.procesarError(respuesta, mensajeError)) {
-            return null;
-        }
-
-        this.enviarDatos = {};
-        return respuesta;
-    }
-
-    async consultarDirectivos() {
-        if (this.directivos) {
-            this.cargarDirectivo();
+    async consultarPersonas() {
+        if (this.personas) {
+            this.cargarPersona();
             return;
         }
 
-        let respuesta = await this.consultaGeneral('consultar las directivas', 'obtener-directivas', { loader: 'progress' });
+        let respuesta = await Services.procesarPeticion.consultaGeneral('obtener-personas','consultar las directivas',  { loader: 'progress' });
         if (!respuesta) return;
 
-        this.directivos = respuesta.data;
-        this.cargarDirectivo();
+        this.personas = respuesta.data;
+        this.cargarPersona();
     }
 
-    cargarDirectivo(id) {
-        Services.select.cargar('#id_directivo', this.directivos, id);
-        Services.select.iniciar('#id_directivo');
+    cargarPersona(id) {
+        Services.select.cargar('#id_persona', this.personas, id);
+        Services.select.iniciar('#id_persona');
     }
 
     async consultarCargos() {
@@ -57,7 +41,7 @@ class Directivo {
             return;
         }
 
-        let respuesta = await this.consultaGeneral('consultar los cargos', 'obtener-cargos', { loader: 'progress' });
+        let respuesta = await Services.procesarPeticion.consultaGeneral('obtener-cargos', 'consultar los cargos', { loader: 'progress' });
         if (!respuesta) return;
 
         this.cargos = respuesta.data;
@@ -70,20 +54,22 @@ class Directivo {
     }
 
     inicializarEventos() {
-        Services.formulario.onClick('btn-crear-directivo', () => this.directivoModal('nuevo'));
+        $('#btn-crear').attr('data-tooltip', 'Crear directiva');
+        Services.tooltip.recargar();
+        Services.formulario.onClick('btn-crear', () => this.directivaDrawer('nuevo'));
         Services.formulario.onSubmit('form-crear-directivo', () => this.guardarDirectivo());
         Services.formulario.onClick('btn-cancelar', () => Services.drawer.cerrar('crear-directivo'));
     }
 
     async consultarDatosTable() {
-        let respuesta = await this.consultaGeneral('cunsulta los datos', 'consultar-datos-tabla-directivo', { loader: 'progress' });
+        let respuesta = await Services.procesarPeticion.consultaGeneral('consultar-datos-tabla-directiva', 'cunsulta los datos', { loader: 'progress' },this.enviarDatos);
         if (!respuesta) return;
         this.cargarTabla(respuesta.data);
     }
 
     cargarTabla(datos) {
         Services.tabla.crear({
-            id: '#table_directiva',
+            id: '#table_directivos',
             data: datos,
             columns: [
                 {
@@ -128,7 +114,7 @@ class Directivo {
 
     btnEditar() {
         Services.tabla.evento('#table_directivo', '.btn-editar', (directiva) => {
-            this.directivaModal('editar');
+            this.directivaDrawer('editar');
             document.getElementById('nombre').value = directiva.usuario.name;
             document.getElementById('correo').value = directiva.usuario.email;
             this.cargarDirectiva(directiva.directiva_id);
@@ -139,7 +125,7 @@ class Directivo {
     }
 
     btnEstado() {
-        Services.tabla.evento('#table_directiva', '.btn-estado', async (directiva) => {
+        Services.tabla.evento('#table_directivos', '.btn-estado', async (directiva) => {
             this.enviarDatos = {
                 id: directiva.id,
                 estado: directiva.estado
@@ -153,7 +139,7 @@ class Directivo {
     }
 
     btnEliminar() {
-        Services.tabla.evento('#table_directiva', '.btn-eliminar', async (directiva) => {
+        Services.tabla.evento('#table_directivos', '.btn-eliminar', async (directiva) => {
             Services.swal.fire({
                 title: `Eliminar Integrante`,
                 html: `¿Está seguro de eliminar el integrante <b>${directiva.usuario.name}?</b> </br> Esta acción no se puede deshacer.`,
@@ -180,22 +166,21 @@ class Directivo {
         this.consultarDatosTable();
     }
 
-    directivaModal(tipo) {
-        let titulo = document.getElementById('titulo-modal');
+    directivaDrawer(tipo) {
+        let titulo = document.getElementById('titulo-drawer');
         let texto = document.getElementById('span-guardar');
-        let icono = document.getElementById('icono-guardar');
+        let icono = document.getElementById('icono-drawer');
         let mensajeLoading = document.getElementById('mensaje-loading');
 
         if (tipo === 'nuevo') {
-            titulo.textContent = 'Nuevo Integrante';
-            texto.textContent = 'Guardar Integrante';
+            titulo.textContent = 'Registrar Nuevo Directivo';
+            texto.textContent = 'Guardar Directivo';
             icono.setAttribute('data-lucide', 'save-check');
             mensajeLoading.textContent = 'Guardando información...';
             this.directivaId = null;
-
             
             $('#id_cargo')[0].tomselect.setValue('');
-            $('#id_directiva')[0].tomselect.setValue('');   
+            $('#id_persona')[0].tomselect.setValue('');   
 
             } else {
             titulo.textContent = 'Editar Integrante';
@@ -206,8 +191,8 @@ class Directivo {
         }
 
         createIcons({ icons });
-        Services.formulario.reiniciar('form-crear-directiva');
-        Services.drawer.abrir('crear-directiva');
+        Services.formulario.reiniciar('form-crear-directivo');
+        Services.drawer.abrir('crear-directivo');
         new PasswordService().inicializar();
         this.enviarDatos = [];
         this.gestionarCampos(tipo);
@@ -233,9 +218,9 @@ class Directivo {
         });
     }
 
-    async guardarDirectiva() {
-        Services.formulario.limpiarErroresCampos('form-crear-directiva');
-        this.enviarDatos = Services.formulario.obtenerDatos('form-crear-directiva');
+    async guardarDirectivo() {
+        Services.formulario.limpiarErroresCampos('form-crear-directivo');
+        this.enviarDatos = Services.formulario.obtenerDatos('form-crear-directivo');
 
         if ($('#check_password').is(':checked')) {
             if (!this.validarContraseña()) return;
@@ -249,7 +234,7 @@ class Directivo {
             ruta = 'actualizar'
         }
 
-        let respuesta = await this.consultaGeneral(ruta + ' la persona', ruta + '-directiva', { loader: { type: 'drawer', id: 'crear-directiva' } });
+        let respuesta = await Services.procesarPeticion.consultaGeneral( ruta + '-directiva', ruta + ' el directivo',{ loader: { type: 'drawer', id: 'crear-directiva' } });
         if (!respuesta) return;
 
         Services.drawer.cerrar('crear-directiva');
@@ -277,7 +262,15 @@ class Directivo {
         return true;
     }
 
+    async ejecutarAcciones(ruta,mensajeError) {
+        let respuesta = await Services.procesarPeticion.consultaGeneral(ruta, mensajeError, { loader: 'progress' },this.enviarDatos);
+        if (!respuesta) return;
+
+        Services.notificacion.success(respuesta.mensaje);
+        this.consultarDatosTable();
+    }
+
 }
 
-const directiva = new Directivo();
+const directiva = new Directiva();
 directiva.cargarMetodos();

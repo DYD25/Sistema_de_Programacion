@@ -56,4 +56,16 @@ class CargoRepository
             ->delete();
     }
 
+    public function listarCargos(string $id_iglesia): array
+    {
+        return Cargo::where(function ($query) use ($id_iglesia) {
+        $query
+        ->orWhereNull('iglesia_id')
+        ->orWhere('iglesia_id', $id_iglesia)
+        ->orWhere('iglesia_id', '');
+        })->orderBy('nombre')
+        ->where('estado', 1)
+            ->get()->toArray();
+    }
+
 }

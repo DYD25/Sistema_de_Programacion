@@ -28,7 +28,7 @@
             Inicio
         </x-menu.item>
 
-        <x-menu.item :href="route('personas.index')" :active="request()->routeIs('personas.*')">
+        <x-menu.item :href="route('personas-vista.index')" :active="request()->routeIs('personas-vista.index')">
             <x-slot:icon>
                 <x-heroicon-s-users class="w-5 h-5" />
             </x-slot:icon>
@@ -43,36 +43,36 @@
             Cargos
         </x-menu.item>
 
-
-        <x-menu.item :href="route('directivos.index')" :active="request()->routeIs('directivos.index')">
+        <x-menu.item :href="route('directivas.index')" :active="request()->routeIs('directivas.index')">
             <x-slot:icon>
                 <x-heroicon-s-user-group class="w-5 h-5" />
             </x-slot:icon>
-            Directivos
+            Directiva
         </x-menu.item>
 
-        <x-menu.item :href="route('directivos.index')" :active="request()->routeIs('directivos.index')">
+ 
+        <!--        <x-menu.item :href="route('directivas.index')" :active="request()->routeIs('directivas.index')">
             <x-slot:icon>
                 <x-heroicon-s-calendar-days class="w-5 h-5" />
             </x-slot:icon>
             Encuesta
         </x-menu.item>
 
-        <x-menu.item :href="route('directivos.index')" :active="request()->routeIs('directivos.index')">
+        <x-menu.item :href="route('directivas.index')" :active="request()->routeIs('directivas.index')">
             <x-slot:icon>
                 <x-heroicon-s-calendar-days class="w-5 h-5" />
             </x-slot:icon>
             Programaciones
         </x-menu.item>
 
-        <x-menu.item :href="route('directivos.index')" :active="request()->routeIs('directivos.index')">
+        <x-menu.item :href="route('directivas.index')" :active="request()->routeIs('directivas.index')">
             <x-slot:icon>
                 <x-heroicon-s-flag class="w-5 h-5" />
             </x-slot:icon>
             Eventos
         </x-menu.item>
 
-        <x-menu.item :href="route('directivos.index')" :active="request()->routeIs('directivos.index')">
+        <x-menu.item :href="route('directivas.index')" :active="request()->routeIs('directivas.index')">
             <x-slot:icon>
                 <x-heroicon-s-clock class="w-5 h-5" />
             </x-slot:icon>
@@ -80,12 +80,12 @@
         </x-menu.item>
 
 
-        <x-menu.item :href="route('directivos.index')" :active="request()->routeIs('directivos.index')">
+        <x-menu.item :href="route('directivas.index')" :active="request()->routeIs('directivas.index')">
             <x-slot:icon>
                 <x-heroicon-s-document-text class="w-5 h-5" />
             </x-slot:icon>
             Notificaciones
-        </x-menu.item>
+        </x-menu.item> -->
 
         <div x-data="{ open: {{ request()->routeIs('administracion.*','iglesias.*','areas.*','personas-general.*') ? 'true' : 'false' }} }">
 

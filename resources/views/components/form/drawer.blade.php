@@ -1,27 +1,27 @@
 @props([
-    'modal',
-    'titulo_id' => 'titulo-modal',
-    'subtitle_id' => 'subtitle-modal',
-    'icon_id' => 'icono-modal',
-    'title',
-    'subtitle' => 'Complete la información requerida',
-    'icon' => 'user',
-    'formId' => null,
-    'textoGuardar' => 'Guardar',
-    'spanGuardar' => 'span-guardar',
-    'iconoGuardar' => 'icono-guardar',
-    'btnCancelar' => 'btn-cancelar',
-    'width' => 'md',
+'drawerId',
+'tituloId' => 'titulo-drawer',
+'subtitleId' => 'subtitle-drawer',
+'iconId' => 'icono-drawer',
+'title',
+'subtitle' => 'Complete la información requerida',
+'icon' => 'user',
+'formId' => null,
+'textoGuardar' => 'Guardar',
+'spanGuardar' => 'span-guardar',
+'iconoGuardar' => 'icono-guardar',
+'btnCancelar' => 'btn-cancelar',
+'width' => 'sm',
 ])
 
 @php
-    $widths = [
-        'sm' => 'md:w-[420px]',
-        'md' => 'md:w-[520px]',
-        'lg' => 'md:w-[700px]',
-        'xl' => 'md:w-[900px]',
-    ];
-    $drawerWidth = $widths[$width] ?? $widths['md'];
+$widths = [
+'sm' => 'md:w-[420px]',
+'md' => 'md:w-[520px]',
+'lg' => 'md:w-[700px]',
+'xl' => 'md:w-[900px]',
+];
+$drawerWidth = $widths[$width] ?? $widths['md'];
 @endphp
 
 <div x-data="{
@@ -35,14 +35,14 @@
 
     init() {
         window.addEventListener('drawer-open', (e) => {
-            if (e.detail.id === '{{ $modal }}') {
+            if (e.detail.id === '{{ $drawerId }}') {
                 this.open = true;
                 document.body.classList.add('overflow-hidden');
             }
         });
 
         window.addEventListener('drawer-close', (e) => {
-            if (e.detail.id === '{{ $modal }}') {
+            if (e.detail.id === '{{ $drawerId }}') {
                 this.cerrar();
             }
         });
@@ -50,7 +50,7 @@
 
         window.addEventListener('drawer-loading', (e) => {
 
-    if (e.detail.id === '{{ $modal }}') {
+    if (e.detail.id === '{{ $drawerId }}') {
         this.loading = true;
     }
 
@@ -58,25 +58,25 @@
 
 window.addEventListener('drawer-loaded', (e) => {
 
-    if (e.detail.id === '{{ $modal }}') {
+    if (e.detail.id === '{{ $drawerId }}') {
         this.loading = false;
     }
 });
 
     }
-}" x-show="open" @keydown.escape.window="if(open) cerrar()" id="{{ $modal }}"
-    class="fixed inset-0 z-50" 
+}" x-show="open" @keydown.escape.window="if(open) cerrar()" id="{{ $drawerId }}"    
+    class="fixed inset-0 z-50"
     x-cloak
-     x-bind:class="{
+    x-bind:class="{
         'pointer-events-none': !open,
         'pointer-events-auto': open
     }">
 
     <!-- Fondo -->
     <div
-     x-show="open"
-    x-transition.opacity
-     class="absolute inset-0 bg-black/40">
+        x-show="open"
+        x-transition.opacity
+        class="absolute inset-0 bg-black/40">
     </div>
 
     <!-- Drawer -->
@@ -92,7 +92,7 @@ window.addEventListener('drawer-loaded', (e) => {
                 <div class="animate-spin rounded-full h-12 w-12 border-4 border-green-600 border-t-transparent mx-auto">
                 </div>
                 <p id="mensaje-loading" class="mt-4 text-gray-600 font-medium">
-                   
+
                 </p>
             </div>
         </div>
@@ -105,15 +105,15 @@ window.addEventListener('drawer-loaded', (e) => {
                 <div class="flex justify-between">
 
                     <div class="flex items-start gap-3">
-                        <div id="{{ $icon_id }}" class="bg-green-100 rounded-lg p-2 flex-shrink-0">
+                        <div id="{{ $iconId }}" class="bg-green-100 rounded-lg p-2 flex-shrink-0">
                             {{ $icon ?? '' }}
                         </div>
 
                         <div>
-                            <h2 id="{{ $titulo_id }}" class="text-lg font-semibold">
+                            <h2 id="{{ $tituloId }}" class="text-lg font-semibold">
                                 {{ $title }}
                             </h2>
-                            <p id="{{ $subtitle_id }}" class="text-sm text-gray-500 -mt-6"> 
+                            <p id="{{ $subtitleId }}" class="text-sm text-gray-500 -mt-6">  
                                 {{ $subtitle }}
                             </p>
                         </div>
@@ -138,8 +138,8 @@ window.addEventListener('drawer-loaded', (e) => {
 
             <!-- Footer -->
             <div class="border-t pt-1 p-3 flex justify-center gap-2">
-                <x-form.button-cancel :modal="$modal" :btnCancelar="$btnCancelar" />
-                <x-form.button-save :texto="$textoGuardar" :spanGuardar="$spanGuardar" :iconoGuardar="$iconoGuardar" class="btn-guardar"/>
+                <x-form.button-cancel :modal="$drawerId" :btnCancelar="$btnCancelar" />
+                <x-form.button-save :texto="$textoGuardar" :spanGuardar="$spanGuardar" :iconoGuardar="$iconoGuardar" class="btn-guardar" />
             </div>
         </form>
     </div>

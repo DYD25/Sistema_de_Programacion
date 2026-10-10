@@ -13,29 +13,14 @@ class Area {
         this.consultarDatosTable();
     }
 
-    async consultaGeneral(error, ruta, { loader = false } = {}) {
-        const mensajeError = `No se pudo completar la solicitud para ${error}`;
-        const respuesta = await Services.peticion.request(ruta, {
-            data: this.enviarDatos,
-            loader
-        });
-
-        if (!Services.respuesta.procesarError(respuesta, mensajeError)) {
-            return null;
-        }
-
-        this.enviarDatos = {};
-        return respuesta;
-    }
-
     inicializarEventos() {
         Services.formulario.onSubmit('form-crear-area', () => this.guardarArea());
-        Services.formulario.onClick('btn-crear-area', () => this.areaModal('nuevo'));
+        Services.formulario.onClick('btn-crear-area', () => this.areaDrawer('nuevo'));
         Services.formulario.onClick('btn-cancelar', () => Services.drawer.cerrar('crear-area'));
     }
 
     async consultarDatosTable() {
-        let respuesta = await this.consultaGeneral('consultar los datos', 'consultar-datos-tabla-area', { loader: 'progress' });
+        let respuesta = await Services.procesarPeticion.consultaGeneral( 'consultar-datos-tabla-area','consultar los datos', { loader: 'progress' });
         if (!respuesta) return;
         this.cargarTabla(respuesta.data);
     }
@@ -99,7 +84,7 @@ class Area {
 
     btnEditar() {
         Services.tabla.evento('#table_areas', '.btn-editar', (area) => {
-            this.areaModal('editar');
+            this.areaDrawer('editar');
             document.getElementById('nombre').value = area.nombre;
             document.getElementById('descripcion').value = area.descripcion;
             document.getElementById('usa_grupo').checked = area.usa_grupo == 1;
@@ -114,7 +99,7 @@ class Area {
                 estado: area.estado,
             };
 
-            this.ejecutarBotones('actualizar el estado', 'estado-area');
+            this.ejecutarAcciones('estado-area','actualizar el estado');
         });
     }
 
@@ -132,22 +117,14 @@ class Area {
             }).then((result) => {
                 if (result.isConfirmed) {
                     this.enviarDatos = { id: area.id, };
-                    this.ejecutarBotones('eliminar la area', 'eliminar-area');
+                    this.ejecutarAcciones( 'eliminar-area','eliminar la area');
                 }
             });
         });
     }
 
-    async ejecutarBotones(mensajeError, ruta) {
-        let respuesta = await this.consultaGeneral(mensajeError, ruta, { loader: 'progress' });
-        if (!respuesta) return;
-
-        Services.notificacion.success(respuesta.mensaje);
-        this.consultarDatosTable();
-    }
-
-    areaModal(tipo) {
-        let titulo = document.getElementById('titulo-modal');
+    areaDrawer(tipo) {
+        let titulo = document.getElementById('titulo-drawer');
         let texto = document.getElementById('span-guardar');
         let icono = document.getElementById('icono-guardar');
         let mensajeLoading = document.getElementById('mensaje-loading');
@@ -182,11 +159,19 @@ class Area {
             this.enviarDatos.id = this.areaId;
             ruta = 'actualizar'
         }
-
-        let respuesta = await this.consultaGeneral(ruta + ' el area', ruta+'-area', { loader: { type: 'drawer', id: 'crear-area' } });
+        let respuesta = await Services.procesarPeticion.consultaGeneral( ruta+'-area', ruta + ' el area', { loader: { type: 'drawer', id: 'crear-area' }}, this.enviarDatos);
         if (!respuesta) return;
 
         Services.drawer.cerrar('crear-area');
+        Services.notificacion.success(respuesta.mensaje);
+        this.consultarDatosTable();
+        this.enviarDatos = [];
+    }
+
+    async ejecutarAcciones(ruta,mensajeError) {
+        let respuesta = await Services.procesarPeticion.consultaGeneral(ruta, mensajeError, { loader: 'progress' },this.enviarDatos);
+        if (!respuesta) return;
+
         Services.notificacion.success(respuesta.mensaje);
         this.consultarDatosTable();
     }

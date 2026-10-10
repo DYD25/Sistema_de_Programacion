@@ -83,22 +83,19 @@ class PersonaService
     public function procesarParaEliminar(array $data)
     {
         $id_iglesia = $this->contextoService->obtenerIglesiaId();
-        $this->personaRepository->eliminarPersona($data['id'], $id_iglesia);
+        $this->personaRepository->eliminarPersona($data['id'], $id_iglesia, $data['id_area']??'');  
 
         return [
             'mensaje' => 'Persona eliminado correctamente.' 
         ];
     }
 
-    // public function obtenerMiembroExistente(string $nombre, string $telefono,int $id_iglesia,int $id=null)
-    // {
-    //     if($this->miembroRepository->existeMiembro($nombre, $telefono,$id_iglesia,$id))      
-    //     {
-    //         return [
-    //             'excepcion' => true,
-    //             'mensaje' => "La persona '{$nombre}' ya se encuentra registrada.",
-    //             'status' => 400,
-    //         ]; 
-    //     }
-    // }
+    public function obtenerPersonas()
+    {
+        $id_iglesia = $this->contextoService->obtenerIglesiaId();
+        $personas = $this->personaRepository->listarPersonas($id_iglesia);
+          return [
+            'data' => $personas
+        ];
+    }
 }

@@ -12,9 +12,10 @@ import CardService from './card.service';
 import ChartService from './chart.service';
 import NotificacionService  from './notificacion.service';    
 import TooltipService from './tooltip.service';
-import RespuestaService from './respuesta.service';
+import procesarPeticionService from './procesarPeticionService';
 import UtilidadesService from './utilidades.service';
 import CheckboxMultipleService from './checkboxMultiple.service';
+import TabsService from './tabs.service';
 import Swal from 'sweetalert2';
 
 
@@ -36,9 +37,10 @@ const Services = {
     card: new CardService(),
     chart: new ChartService(),
     tooltip: new TooltipService(),
-    respuesta: new RespuestaService(),
+    procesarPeticion: new procesarPeticionService(),
     utilidades: new UtilidadesService(),
     checkboxMultiple: new CheckboxMultipleService(),
+    tabs: new TabsService(),
     swal: Swal,
 
 };

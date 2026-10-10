@@ -13,36 +13,21 @@ class Iglesia {
         this.consultarDatosTable();
     }
 
-    async consultaGeneral(error, ruta, { loader = false } = {}) {
-        const mensajeError = `No se pudo completar la solicitud para ${error}`;
-        const respuesta = await Services.peticion.request(ruta, {
-            data: this.enviarDatos,
-            loader
-        });
-
-        if (!Services.respuesta.procesarError(respuesta, mensajeError)) {
-            return null;
-        }
-
-        this.enviarDatos = {};
-        return respuesta;
-    }
-
     inicializarEventos() {
         Services.formulario.onSubmit('form-crear-iglesia', () => this.guardarIglesia());
-        Services.formulario.onClick('btn-crear-iglesia', () => this.iglesiaModal('nuevo'));
+        Services.formulario.onClick('btn-crear-iglesia', () => this.iglesiaDrawer('nuevo'));
         Services.formulario.onClick('btn-cancelar', () => Services.drawer.cerrar('crear-iglesia'));
     }
 
     async consultarDatosTable() {
-        let respuesta = await this.consultaGeneral('consultar los datos', 'consultar-datos-tabla-iglesia', { loader: 'progress' });
+        let respuesta = await Services.procesarPeticion.consultaGeneral('consultar-datos-tabla-iglesia','consultar los datos',  { loader: 'progress' });
         if (!respuesta) return;
         this.cargarTabla(respuesta.data);
     }
 
     cargarTabla(datos) {
         Services.tabla.crear({
-            id: '#table_iglesia',
+            id: '#table_iglesias',
             data: datos,
             columns: [
                 {
@@ -91,8 +76,8 @@ class Iglesia {
     }
 
     btnEditar() {
-        Services.tabla.evento('#table_iglesia', '.btn-editar', (iglesia) => {
-            this.iglesiaModal('editar');
+        Services.tabla.evento('#table_iglesias', '.btn-editar', (iglesia) => {
+            this.iglesiaDrawer('editar');
             document.getElementById('nombre').value = iglesia.nombre;
             document.getElementById('direccion').value = iglesia.direccion;
             document.getElementById('ciudad').value = iglesia.ciudad;
@@ -101,22 +86,17 @@ class Iglesia {
     }
 
     btnEstado() {
-        Services.tabla.evento('#table_iglesia', '.btn-estado', async (iglesia) => {
+        Services.tabla.evento('#table_iglesias', '.btn-estado', async (iglesia) => {
             this.enviarDatos = {
                 id: iglesia.id,
                 estado: iglesia.estado,
             };
-
-            let respuesta = await this.consultaGeneral('actualizar el estado', 'estado-iglesia', { loader: 'progress' });
-            if (!respuesta) return;
-
-            Services.notificacion.success(respuesta.mensaje);
-            this.consultarDatosTable();
+            this.ejecutarAcciones('estado-iglesia','actualizar el estado');
         });
     }
 
     btnEliminar() {
-        Services.tabla.evento('#table_iglesia', '.btn-eliminar', (iglesia) => {
+        Services.tabla.evento('#table_iglesias', '.btn-eliminar', (iglesia) => {
             Services.swal.fire({
                 title: `Eliminar Registro`,
                 html: `¿Está seguro de eliminar el registro de <b>${iglesia.nombre}?</b> </br> Esta acción no se puede deshacer.`,
@@ -128,24 +108,15 @@ class Iglesia {
                 cancelButtonText: 'Cancelar'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    this.eliminar(iglesia.id);
+                    this.enviarDatos = { id: iglesia.id, };
+                    this.ejecutarAcciones('eliminar-iglesia','eliminar el iglesia');
                 }
             });
         });
     }
 
-    async eliminar(id) {
-        this.enviarDatos = { id: id, };
-        
-        let respuesta = await this.consultaGeneral('eliminar el iglesia', 'eliminar-iglesia', { loader: 'progress' });
-        if (!respuesta) return;
-
-        Services.notificacion.success(respuesta.mensaje);
-        this.consultarDatosTable();
-    }
-
-    iglesiaModal(tipo) {
-        let titulo = document.getElementById('titulo-modal');
+    iglesiaDrawer(tipo) {
+        let titulo = document.getElementById('titulo-drawer');
         let texto = document.getElementById('span-guardar');
         let icono = document.getElementById('icono-guardar');
         let mensajeLoading = document.getElementById('mensaje-loading');
@@ -180,10 +151,19 @@ class Iglesia {
             ruta = 'actualizar'
         }
 
-        let respuesta = await this.consultaGeneral(ruta + ' el iglesia', ruta+'-iglesia', { loader: { type: 'drawer', id: 'crear-iglesia' } });
+        let respuesta = await Services.procesarPeticion.consultaGeneral( ruta+'-iglesia', ruta + ' el iglesia', { loader: { type: 'drawer', id: 'crear-iglesia' }}, this.enviarDatos);
         if (!respuesta) return;
 
         Services.drawer.cerrar('crear-iglesia');
+        Services.notificacion.success(respuesta.mensaje);
+        this.consultarDatosTable();
+        this.enviarDatos = [];
+    }
+
+    async ejecutarAcciones(ruta,mensajeError) {
+        let respuesta = await Services.procesarPeticion.consultaGeneral(ruta,mensajeError, { loader: 'progress' },this.enviarDatos);
+        if (!respuesta) return;
+
         Services.notificacion.success(respuesta.mensaje);
         this.consultarDatosTable();
     }

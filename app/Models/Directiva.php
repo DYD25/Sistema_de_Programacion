@@ -4,16 +4,15 @@ namespace App\Models;
 
 use App\Models\User;
 use App\Models\Cargo;
-use App\Models\Directiva;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Ulids\HasUlids;
+use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Model;
 
-class Directivo extends Model
+class Directiva extends Model
 {
-    use HasUlids;
     use HasFactory;
+    use HasUlids;
     
     public $incrementing = false;
 
@@ -28,11 +27,6 @@ class Directivo extends Model
     public function cargo()
     {
         return $this->belongsTo(Cargo::class);
-    }
-
-    public function directiva()
-    {
-        return $this->belongsTo(Directiva::class);
     }
 
     

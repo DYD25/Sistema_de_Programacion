@@ -5,6 +5,9 @@ namespace App\Http\Requests;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
+
+
 
 class DirectivoRequest extends FormRequest
 {
@@ -24,31 +27,39 @@ class DirectivoRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'nombre' => [
+            'correo' => [
                 'required',
-                'string',
-                'max:20',
-                'regex:/^[\pL\s]+$/u',
+                'max:50',
+                'email',
+                'exists:users,email',
+                Rule::unique('directivas', 'correo')->ignore($this->id),
             ],
-            'correo' => 'required|max:50',
             'password' => 'sometimes|nullable|min:10',
-            'id_cargo' => 'required',
-            'id_directiva' => 'required',
+            'id_cargo' => [
+                'required',
+                'exists:directivas,cargos_id',
+            ],
+            'id_persona' => [
+                'required',
+                'exists:personas,id',
+                Rule::unique('persona_areas', 'id_persona')->ignore($this->id),
+            ],
+
         ];
     }
 
     public function messages(): array
     {
         return [
-            'nombre.required' => 'El nombre es obligatorio.',
-            'nombre.regex' => 'El nombre solo puede contener letras y espacios.',
-            'nombre.max' => 'El nombre no puede exceder 20 caracteres.',
+      
             'correo.required' => 'El correo electrónico es obligatorio.',
             'correo.max' => 'El correo electrónico no puede exceder 50 caracteres.',
             'password.required' => 'La contraseña es obligatoria.',
             'password.min' => 'La contraseña debe tener al menos 10 caracteres.',
-            'cargo_id.required' => 'El cargo es obligatorio.',
-            'directiva_id.required' => 'La directiva es obligatoria.',
+            'id_cargo.required' => 'El cargo es obligatorio.',
+            'id_persona.required' => 'La persona es obligatoria.',
+            'id_persona.exists' => 'La persona no existe.',
+            'id_persona.unique' => 'La persona ya está asignada a otra directiva.',
 
         ];
     }

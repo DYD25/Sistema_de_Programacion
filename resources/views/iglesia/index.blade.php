@@ -10,30 +10,29 @@
 
     <div id="panel-body">
          
-        <x-crud.panel modal="crear-iglesia">
+        <x-crud.panel>
             <x-slot:icon>
                 <x-heroicon-o-user-group class="w-6 h-6 text-green-600" />
             </x-slot:icon>
 
             @php
-            $columnas = [
-                ['contenido' => 'Nombre'],
-                ['contenido' => 'Dirección'],
-                ['contenido' => 'Ciudad'],
-                ['contenido' => 'Fecha de Creación'],
-                ['contenido' => 'Estado'],
-                ['contenido' => 'Acciones'],
+                $columnas = [
+                    ['contenido' => 'Nombre'],
+                    ['contenido' => 'Dirección'],
+                    ['contenido' => 'Ciudad'],
+                    ['contenido' => 'Fecha de Creación'],
+                    ['contenido' => 'Estado'],
+                    ['contenido' => 'Acciones'],
                 ];
             @endphp
 
             <div class="overflow-x-auto">
-                <x-crud.table id="table_iglesia" :columnas="$columnas" />
+                <x-crud.table id="table_iglesias" :columnas="$columnas" />
             </div>
 
         </x-crud.panel>
 
-        <x-form.drawer modal="crear-iglesia" title="Crear Iglesia" subtitle="Complete la información" width="sm"
-            formId="form-crear-iglesia" textoGuardar="Iglesia">
+        <x-form.drawer drawerId="crear-iglesia" title="Crear Iglesia" formId="form-crear-iglesia" textoGuardar="Iglesia">
 
             <x-slot:icon>
                 <x-heroicon-o-user-group class="w-7 h-7 text-green-600" />
@@ -68,9 +67,8 @@
                         </x-slot:icon>
                     </x-form.input>
                 </div>
-                
             </div>
-
+            
         </x-form.drawer>
     </div>
 

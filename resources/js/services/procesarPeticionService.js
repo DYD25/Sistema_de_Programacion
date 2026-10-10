@@ -1,5 +1,20 @@
-import Services from '../services';
-export default class RespuestaService {
+import Services from '.';
+export default class procesarPeticionService {
+
+    async consultaGeneral(ruta,error, { loader = false } = {},datos = {}) {
+        let mensajeError = `No se pudo completar la solicitud para ${error}`;
+        let respuesta = await Services.peticion.request(ruta, {
+            data: datos,
+            loader
+        });
+
+        if (!this.procesarError(respuesta, mensajeError)) {
+            return null;
+        }
+
+        return respuesta;
+    }
+
 
     procesarError(datos, mensajeError) {
 

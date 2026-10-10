@@ -74,5 +74,14 @@ class CargoService
         ];
     }
 
+    public function procesarParaObtenerCargos(): array
+    {
+        $id_iglesia = $this->contextoService->obtenerIglesiaId();
+        $cargos = $this->cargoRepository->listarCargos($id_iglesia);
+
+        return [
+            'data' => $cargos
+        ];
+    }
 
 }

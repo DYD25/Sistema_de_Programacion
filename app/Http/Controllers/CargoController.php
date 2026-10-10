@@ -80,6 +80,17 @@ class CargoController extends Controller
             return response()->json(['error' => true, 'mensaje' => 'No se pudo eliminar el cargo.'], 500);    
         }
     }
+
+    public function obtenerCargos()
+    {
+        try {
+            return response()->json(
+                $this->cargoService->procesarParaObtenerCargos()
+            );
+        } catch (Throwable $t) {
+            return response()->json([  'error' => true,'mensaje' => 'No fue posible obtener los cargos.' ], 500);
+        }
+    }
   
 }
 

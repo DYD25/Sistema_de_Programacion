@@ -15,8 +15,12 @@ class PersonaController extends Controller
         protected PersonaService $personaService,
     ) {}
 
-    public function index()
+    public function index(Request $request)
     {
+        if ($request->routeIs('personas-vista.index')) {
+            return view('persona.vista');
+        }
+
         return view('persona.index');
     }
 
@@ -73,11 +77,26 @@ class PersonaController extends Controller
             $response = $this->personaService->procesarParaEliminar($data);
             return response()->json($response);
         } catch (Throwable $t) {
-             dd(['error' => $t->getMessage(),
+            return response()->json(['error' => true, 'mensaje' => 'No se pudo eliminar la persona.'], 500);
+        }
+    }
+
+    public function vista(){
+        return view('persona.vista');
+    }
+
+    public function obtenerPersonas(Request $request)
+    {
+        try {
+            return response()->json(
+                $this->personaService->obtenerPersonas()
+            );
+        } catch (Throwable $t) {
+                         dd(['error' => $t->getMessage(),
                 'Linea'=>$t->getLine(),
                 'Archivo'=>$t->getFile(),
             ]);
-            return response()->json(['error' => true, 'mensaje' => 'No se pudo eliminar la persona.'], 500);
+            return response()->json([  'error' => true,'mensaje' => 'No fue posible obtener las personas.' ], 500);
         }
     }
 }

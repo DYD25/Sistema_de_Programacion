@@ -57,21 +57,21 @@
 
         </div>
 
-        <x-crud.panel modal="crear-persona">
+        <x-crud.panel>
 
             <x-slot:icon>
                 <x-heroicon-o-user-group class="w-6 h-6 text-green-600" />
             </x-slot:icon>
 
             @php
-            $columnas = [
-            ['contenido' => 'Nombre Completo'],
-            ['contenido' => 'Telefono'],
-            ['contenido' => 'Fecha de Nacimiento'],
-            ['contenido' => 'Cantidad Area'],
-            ['contenido' => 'Estado'],
-            ['contenido' => 'Acciones'],
-            ];
+                $columnas = [
+                    ['contenido' => 'Nombre Completo'],
+                    ['contenido' => 'Telefono'],
+                    ['contenido' => 'Fecha de Nacimiento'],
+                    ['contenido' => 'Cantidad Area'],
+                    ['contenido' => 'Estado'],
+                    ['contenido' => 'Acciones'],
+                ];
             @endphp
 
             <div class="overflow-x-auto">
@@ -80,8 +80,7 @@
 
         </x-crud.panel>
 
-        <x-form.drawer modal="crear-persona" title="Crear Persona" subtitle="Complete la información" width="sm"
-            formId="form-crear-persona" textoGuardar="Persona">
+        <x-form.drawer drawerId="crear-persona" title="Crear Persona" formId="form-crear-persona" textoGuardar="Persona">
 
             <x-slot:icon>
                 <x-heroicon-o-user class="w-7 h-7 text-green-600" />
@@ -125,9 +124,12 @@
 
          <x-form.modal title="Asignar Areas/Ministerio" modal="asignar-areas" subtitle="Asigna las areas/ministerios a la persona" formId="form-asignar-areas" 
                     textoGuardar="Guardar Asignación" btnCancelar="btn-cancelar-areas">
+            <x-slot:icon>
+                <x-heroicon-o-tag class="w-7 h-7 text-green-600" />
+            </x-slot:icon>
             
-            <div class="border rounded-lg p-4">
-                <div  id="contenedor-areas" class="grid grid-cols-1 md:grid-cols-3 gap-3">
+            <div class="border rounded-lg pl-4 pr-4">
+                <div  id="contenedor-areas" class="grid grid-cols-1 md:grid-cols-2 gap-1">
                 </div>
             </div>
         </x-form.modal>

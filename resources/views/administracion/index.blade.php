@@ -13,23 +13,23 @@
 
     <div id="panel-body"> 
     <!-- TABS -->
-        <div class="mb-6 mt-6 border-b border-slate-200">
+        <!-- <div class="mb-6 mt-6 border-b border-slate-200">
             <nav class="flex gap-6" aria-label="Tabs">
 
-                <x-form.button-tag tab="usuario" texto="Usuarios" activo="true">
+                <x-tabs.button-tab tab="usuario" texto="Usuarios" activo="true">
                     <x-heroicon-o-user-group class="w-5 h-5" />
-                </x-form.button-tag>
+                </x-tabs.button-tab>
                 
-                <x-form.button-tag tab="rol" texto="Roles" activo="true">
+                <x-tabs.button-tab tab="rol" texto="Roles" activo="true">
                     <x-heroicon-o-shield-check class="w-5 h-5" />
-                </x-form.button-tag>
+                </x-tabs.button-tab>
                 
-                <x-form.button-tag tab="permiso" texto="Permisos" activo="true">
+                <x-tabs.button-tab tab="permiso" texto="Permisos" activo="true">
                     <x-heroicon-o-key class="w-5 h-5" />
-                </x-form.button-tag>
+                </x-tabs.button-tab>    
 
             </nav>
-        </div> 
+        </div>  -->
 
         <!-- ========================= -->
         <!-- TAB USUARIOS -->

@@ -53,11 +53,12 @@ class PersonaRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'nombre.required' => 'El nombre es obligatorio.',
-            'nombre.regex' => 'El nombre solo puede contener letras y espacios.',
-            'nombre.max' => 'El nombre no puede exceder 20 caracteres.',
-            'nombre_whatsapp.required' => 'El nombre de Whatsapp es obligatorio.',
-            'nombre_whatsapp.max' => 'El nombre de Whatsapp no puede exceder 50 caracteres.',
+            'nombres.required' => 'El nombre es obligatorio.',
+            'nombres.regex' => 'El nombre solo puede contener letras y espacios.',
+            'nombres.max' => 'El nombre no puede exceder 20 caracteres.',
+            'apellidos.required' => 'El apellido es obligatorio.',
+            'apellidos.regex' => 'El apellido solo puede contener letras y espacios.',
+            'apellidos.max' => 'El apellido no puede exceder 20 caracteres.',
             'telefono.required' => 'El número de teléfono es obligatorio.',
             'telefono.digits' => 'El número de teléfono debe tener exactamente 10 dígitos.',
             'telefono.unique' => 'El número de teléfono ya está registrado.',

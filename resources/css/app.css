@@ -267,8 +267,8 @@ table.dataTable tbody td {
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	background: var(--verder-color);
-	color: #ffffff;
+	background: #d4f7df;
+	color: var(--verder-color);
 	font-size: 0.8rem;
 	font-weight: 700;
 	text-transform: uppercase;
@@ -359,4 +359,10 @@ table.dataTable tbody td {
 .estilos-checkbox {
 	 @apply w-5 h-5 rounded-md border-slate-300 text-[#1FA6A6] 
 	 shadow-sm transition focus:ring-0 focus:outline-none focus:border-[#1FA6A6]
+}
+
+.border-checkbox{
+	border-bottom: 1px solid #e5e7eb;
+	border-left: 1px solid #e5e7eb;
+	padding-bottom: 2rem;
 }

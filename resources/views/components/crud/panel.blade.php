@@ -1,6 +1,5 @@
 @props([
     'title' => null,
-    'modal' => null,
 ])
 
 <div x-data>
@@ -8,6 +7,5 @@
         <div class="p-4">
             {{ $slot }}
         </div>
-
     </div>
 </div>
